@@ -4,6 +4,7 @@ import FilterButton from "@/components/filterBtn";
 import SearchField from "@/components/searchfield";
 import { Button } from "@/components/ui/button";
 import { DocumentState } from "@/lib/validators/document-validator";
+import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 
@@ -79,7 +80,6 @@ const YEAR = {
 
 
 
-
 const SearchPage = () => {
   const [filter, setFilter] = useState<DocumentState>({
     region: ["European", "Northern Africa", "Southern Africa", "Eastern Africa", "Western Africa", "Central"],
@@ -151,7 +151,12 @@ const SearchPage = () => {
                     {option.label}
                   </label>
                 </li>
-              ))}</ul>
+              ))}
+              </ul>
+              <div className='flex items-center mt-4 group cursor-pointer'>
+                <p className='text-sm text-muted-foreground group-hover:text-gray-900'>show more</p>
+                <ChevronDown className='ml-2 w-4 h-4 text-gray-400 group-hover:text-gray-500' />
+              </div>
             </div>
           </div>
 
