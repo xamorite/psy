@@ -2,7 +2,9 @@
 
 import FilterButton from "@/components/filterBtn";
 import SearchField from "@/components/searchfield";
+import StudyList from "@/components/studies/StudyList";
 import { Button } from "@/components/ui/button";
+import { useGetStudyLists } from "@/hooks/use-get-studyView";
 import { DocumentState } from "@/lib/validators/document-validator";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
@@ -112,6 +114,7 @@ const SearchPage = () => {
     }
   }
 
+  const { data: studies, isLoading } = useGetStudyLists();
 
   return (
     <div className="w-full flex flex-col mx-auto mb-10">
@@ -120,7 +123,7 @@ const SearchPage = () => {
         <SearchField />
         <Button variant="link">Use Advanced Search</Button>
       </div>
-      <div className='min-h-screen flex mx-4 lg:mx-10 mt-20'>
+      <div className='flex gap-6 mx-4 lg:mx-10 mt-20'>
         <div className='w-80 shrink space-y-10'>
           <h2 className='text-4xl font-semibold'>Filter by:</h2>
           <div className='flex gap-4 lg:gap-6'>
@@ -270,9 +273,18 @@ const SearchPage = () => {
         </div>
 
 
-        <div className='grow'>
-         content
+        <div>
+          {isLoading ? (
+            <div>loading</div>
+          ) : (studies && studies.length > 0) ? (
+            studies?.flatMap((study, i: number) => (
+              <StudyList key={i} study={study} />
+            ))
+          ) : (
+            <div></div>
+          )}
         </div>
+
       </div>
     </div>
   );
