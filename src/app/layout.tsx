@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import NavBar from "@/components/nav";
 import Footer from "@/components/footer";
+import Providers from "@/components/Providers";
 
 const syne = Syne({ subsets: ["latin"] });
 
@@ -19,10 +20,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en ">
-      <body className={cn("min-h-screen antialiased", syne.className)}>
-        <NavBar />
-        <div className="flex flex-col min-h-screen mx-auto">{children}</div>
-        <Footer/>
+      <body
+        className={cn("min-h-screen antialiased", syne.className)}
+      >
+        <Providers>
+          <NavBar />
+          <div className="flex flex-col min-h-screen mx-auto">
+            {children}
+          </div>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
