@@ -274,9 +274,16 @@ const SearchPage = () => {
 
 
         <div>
+        {isLoading ? (
+            <div></div>
+          ) : (studies && studies.length > 0) ? ( 
+            <h1 className="text-2xl lg:text-2xl font-bold">{studies.length} Results</h1>
+          ) : (
+            <div>Can't fetch</div>
+          )}
           {isLoading ? (
             <div>loading</div>
-          ) : (studies && studies.length > 0) ? (
+          ) : (studies && studies.length > 0) ? ( 
             studies?.flatMap((study, i: number) => (
               <StudyList key={i} study={study} />
             ))
