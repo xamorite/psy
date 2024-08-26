@@ -118,8 +118,8 @@ const SearchPage = () => {
 
   return (
     <div className="w-full flex flex-col mx-auto mb-10">
-      <div className="mx-auto text-center mt-[10vh] space-y-4">
-        <h1 className=" text-2xl lg:text-4xl font-bold">Search</h1>
+      <div className="mx-auto text-center mt-[10vh]">
+        {/* <h1 className=" text-2xl lg:text-4xl font-bold">Search</h1> */}
         <SearchField />
         <Button variant="link">Use Advanced Search</Button>
       </div>
@@ -279,7 +279,7 @@ const SearchPage = () => {
           ) : (studies && studies.length > 0) ? ( 
             <h1 className="text-2xl lg:text-2xl font-bold">{studies.length} Results</h1>
           ) : (
-            <div>Can't fetch</div>
+            <div>Can not fetch</div>
           )}
           {isLoading ? (
             <div>loading</div>
