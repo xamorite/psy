@@ -279,7 +279,7 @@ const SearchPage = () => {
           ) : (studies && studies.length > 0) ? ( 
             <h1 className="text-2xl lg:text-2xl font-bold">{studies.length} Results</h1>
           ) : (
-            <div>Can not fetch</div>
+            <div>Can not fetch page</div>
           )}
           {isLoading ? (
             <div>loading</div>
