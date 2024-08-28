@@ -124,7 +124,7 @@ const SearchPage = () => {
         <Button variant="link">Use Advanced Search</Button>
       </div>
       <div className='flex gap-6 mx-4 lg:mx-10 mt-20'>
-        <div className='w-80 shrink space-y-10'>
+        <div className='sticky top-0 z-40 w-80 h-fit shrink space-y-10'>
           <h2 className='text-4xl font-semibold'>Filter by:</h2>
           <div className='flex gap-4 lg:gap-6'>
             <FilterButton name="Clear Filters" type="ghost" />
