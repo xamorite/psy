@@ -1,13 +1,17 @@
 "use client"
 
 import FilterButton from "@/components/filterBtn";
-import SearchField from "@/components/searchfield";
+import StudySkeleton from "@/components/studies/study-skeleton";
 import StudyList from "@/components/studies/StudyList";
 import { Button } from "@/components/ui/button";
 import { useGetStudyLists } from "@/hooks/use-get-studyView";
 import { DocumentState } from "@/lib/validators/document-validator";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
 import { useState } from "react";
+import { useGetSearchReasult } from "@/hooks/use-get-searchResults";
+import { Input } from "@/components/ui/input";
+import useDebounce from "@/hooks/useDebounce";
+import NotFound from "@/components/NotFound";
 
 
 const REGIONS = {
@@ -83,6 +87,7 @@ const YEAR = {
 
 
 const SearchPage = () => {
+  const [searchTerm, setSearchTerm] = useState<string>('');
   const [filter, setFilter] = useState<DocumentState>({
     region: ["European", "Northern Africa", "Southern Africa", "Eastern Africa", "Western Africa", "Central"],
     genomic: ["GWAS", "Candidate Gene", "Familial Linkage", "Epigenetics", "Expression", "Microbiome", "Others", "Undefined"],
@@ -91,7 +96,7 @@ const SearchPage = () => {
     year: ["2024", "2023", "2022", "2021", "2020"]
   });
 
-  // console.log(filter)
+  const debouncedSearchTerm = useDebounce(searchTerm, 400);
 
   const applyArrayFilter = ({
     category, value
@@ -114,15 +119,36 @@ const SearchPage = () => {
     }
   }
 
-  const { data: studies, isLoading } = useGetStudyLists();
+  const { data: studies, isLoading, isError } = useGetStudyLists();
+
+  const { data: searches, isLoading: isSearching, isError: isSearchingError } = useGetSearchReasult(searchTerm, debouncedSearchTerm);
+
+
+  const allResults = searches !== undefined ? searches : studies;
+  console.log("allResult", allResults);
 
   return (
     <div className="w-full flex flex-col mx-auto mb-10">
-      <div className="mx-auto text-center mt-[10vh]">
-        {/* <h1 className=" text-2xl lg:text-4xl font-bold">Search</h1> */}
-        <SearchField />
-        <Button variant="link">Use Advanced Search</Button>
+
+      {/* <h1 className=" text-2xl lg:text-4xl font-bold">Search</h1> */}
+
+      <div className="w-3/5 lg:max-w-2xl flex flex-col mx-auto mt-10 lg:mt-16 space-y-3">
+        <div className="flex items-center justify-center ring-1 ring-gray-500 focus-within:ring-gray-400 rounded-md">
+          <Search
+            className='size-5 ml-4 text-gray-700 group-hover:text-gray-900 dark:text-white dark:group-hover:text-white'
+            aria-hidden='true'
+          />
+          <Input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className='border-0 dark:text-white dark:placeholder:text-white'
+            placeholder='Search for titles'
+            autoComplete="off"
+          />
+        </div>
+
       </div>
+
       <div className='flex gap-6 mx-4 lg:mx-10 mt-20'>
         <div className='sticky top-0 z-40 w-80 h-fit shrink space-y-10'>
           <h2 className='text-4xl font-semibold'>Filter by:</h2>
@@ -272,23 +298,33 @@ const SearchPage = () => {
           </div>
         </div>
 
+        <div className="w-full flex flex-col gap-6">
+          <div>
+            {(isLoading || isSearching) ? (
+              <div></div>
+            ) : (allResults && allResults.length > 0) ? (
+              <h1 className="text-2xl lg:text-2xl font-bold">{allResults.length} Results</h1>
+            ) : null}
+          </div>
 
-        <div>
-        {isLoading ? (
-            <div></div>
-          ) : (studies && studies.length > 0) ? ( 
-            <h1 className="text-2xl lg:text-2xl font-bold">{studies.length} Results</h1>
-          ) : (
-            <div>Can not fetch page</div>
-          )}
-          {isLoading ? (
-            <div>loading</div>
-          ) : (studies && studies.length > 0) ? ( 
-            studies?.flatMap((study, i: number) => (
+          {(isLoading || isSearching) ? (
+            new Array(10)
+              .fill(null)
+              .map((_, i) => <StudySkeleton key={i} />)
+          ) : (isError || isSearchingError) ? (
+            <div className="flex items-center col-span-3">
+              <span className="relative flex h-2 w-2 mr-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+              </span>
+              <p className="flex text-sm font-medium text-gray-900">Something went wrong</p>
+            </div>
+          ) : (allResults && allResults.length > 0) ? (
+            allResults?.map((study, i: number) => (
               <StudyList key={i} study={study} />
             ))
           ) : (
-            <div></div>
+            <NotFound searchTerm={searchTerm} />
           )}
         </div>
 
