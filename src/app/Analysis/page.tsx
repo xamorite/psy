@@ -22,6 +22,7 @@ import {
 import { useGetYears } from "@/hooks/use-get-yearApi";
 import YearlyStudyCount from "@/components/graph/yearly";
 import RegionalStudyCount from "@/components/graph/region";
+import DisorderStudyCount from "@/components/graph/disorder";
 // import { fetchYearlyStudyCount } from "../api/year/route";
 // import YearlyStudyCount from "@/components/graph/yearly";
 
@@ -41,25 +42,29 @@ const Analysis = () => {
           Uncover Regional Insights and Research Trends
         </p>
       </div>
-      <div className="p-10 w-full ">
+      <div className="p-10 w-full space-y-6 ">
         <h1 className="text-2xl lg:text-3xl font-bold ">Visualize by:</h1>
-        <Tabs defaultValue="account" className="w-[400px]">
-          <TabsList>
+        <Tabs defaultValue="account" className="lg:w-[55vw] mx-auto space-y-10">
+         <div className="p-3 border-y-[1px] border-x-[1px]">
+         <TabsList className="flex justify-between">
             <TabsTrigger value="year">Year</TabsTrigger>
             <TabsTrigger value="region">Region</TabsTrigger>
             <TabsTrigger value="disorder">Disorder</TabsTrigger>
             <TabsTrigger value="biologicalModality">
-              Biological Modality
+              Biological Mod..
             </TabsTrigger>
             <TabsTrigger value="geneticSource">Password</TabsTrigger>
           </TabsList>
+         </div>
           <TabsContent value="year">
             <YearlyStudyCount />
           </TabsContent>
           <TabsContent value="region">
             <RegionalStudyCount />
           </TabsContent>
-          <TabsContent value="disorder">Change your password here.</TabsContent>
+          <TabsContent value="disorder">
+            <DisorderStudyCount/>
+          </TabsContent>
           <TabsContent value="biologicalModality">
             Change your password here.
           </TabsContent>

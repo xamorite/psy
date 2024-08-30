@@ -1,8 +1,9 @@
+"use client";
 
 import React, { useEffect, useState } from "react";
 
 import { TrendingUp } from "lucide-react";
-import { CartesianGrid, Bar,BarChart, LabelList, XAxis } from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 import {
   Card,
   CardContent,
@@ -17,15 +18,14 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useGetRegion } from "@/hooks/use-get-region";
+import { Bar, BarChart, LabelList } from "recharts";
+import { useGetDisorder } from "@/hooks/use-get-disorder";
 
-
-
-const RegionalStudyCount: React.FC = () => {
-    const { data: year, isLoading, isError } = useGetRegion();
+const DisorderStudyCount: React.FC = () => {
+  const { data: year, isLoading, isError } = useGetDisorder();
 
   const chartData = year?.map((data) => ({
-    year: data.research_regions__name,
+    year: data.disorder__disorder_name,
     study_count: data.study_count,
   }));
 
@@ -35,7 +35,6 @@ const RegionalStudyCount: React.FC = () => {
       color: "hsl(var(--chart-1))",
     },
   };
-
   return (
     <Card>
       <CardHeader>
@@ -86,11 +85,4 @@ const RegionalStudyCount: React.FC = () => {
   );
 };
 
-export default RegionalStudyCount;
-
-
-
-
-
-
-
+export default DisorderStudyCount;
