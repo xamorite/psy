@@ -1,12 +1,11 @@
-import { Study } from "@/types/studyViewList";
+import { ApiResponse } from "@/types/studyViewList";
 import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
-import debounce from "lodash.debounce";
 
 
 
 export const useGetSearchReasult = (searchTerm: string, debouncedSearchTerm: string) => {
-    const query = useQuery<Study[], Error>({
+    const query = useQuery<ApiResponse, Error>({
         queryKey: ['searchResults', debouncedSearchTerm],
         queryFn: async () => {
             const response = await axios.get(`api/search-study?title=${searchTerm}`)
