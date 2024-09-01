@@ -4,11 +4,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
+        const searchParams = req.nextUrl.searchParams;
 
-        const url = "https://AlgorithmXComp.pythonanywhere.com/api/studies"
+        const pageNum = searchParams.get("page");
+
+        const url = `https://algorithmxcomp.pythonanywhere.com/api/studies/?page=${pageNum}`
 
         const response = await axios.get(url);
-        // console.log(response);
+        console.log(response);
         
         return NextResponse.json(response.data);
         
