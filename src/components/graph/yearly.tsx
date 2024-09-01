@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 
 import { TrendingUp } from "lucide-react";
@@ -19,10 +18,8 @@ import {
 } from "@/components/ui/chart";
 import { useGetYears } from "@/hooks/use-get-yearApi";
 
-
-
 const YearlyStudyCount: React.FC = () => {
-    const { data: year, isLoading, isError } = useGetYears();
+  const { data: year, isLoading, isError } = useGetYears();
 
   const chartData = year?.map((data) => ({
     year: data.year,
@@ -39,8 +36,8 @@ const YearlyStudyCount: React.FC = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Number of publications</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Yearly Study-Count</CardTitle>
+        <CardDescription>Number of Publications </CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -68,10 +65,15 @@ const YearlyStudyCount: React.FC = () => {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Highlight <TrendingUp className="h-4 w-4" />
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          The data on African genomics research reveals a clear upward trend
+          from 2007, with a significant surge in publications starting around
+          2014. This growth reflects increasing global interest and investment
+          in the field, peaking at 14 publications in 2022. The consistent
+          activity over the years highlights the growing importance and
+          recognition of African genomics on the global research stage.
         </div>
       </CardFooter>
     </Card>
@@ -79,10 +81,3 @@ const YearlyStudyCount: React.FC = () => {
 };
 
 export default YearlyStudyCount;
-
-
-
-
-
-
-

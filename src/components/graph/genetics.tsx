@@ -20,12 +20,14 @@ import {
 } from "@/components/ui/chart";
 import { Bar, BarChart, LabelList } from "recharts";
 import { useGetDisorder } from "@/hooks/use-get-disorder";
+import { useGetBiological } from "@/hooks/use-get-biological";
+import { useGetGenetics } from "@/hooks/use-get-genetics";
 
-const DisorderStudyCount: React.FC = () => {
-  const { data: year, isLoading, isError } = useGetDisorder();
+const GeneticsStudyCount: React.FC = () => {
+  const { data: year, isLoading, isError } = useGetGenetics();
 
   const chartData = year?.map((data) => ({
-    disorder: data.disorder__disorder_name,
+    disorder: data.source,
     study_count: data.study_count,
   }));
 
@@ -38,7 +40,7 @@ const DisorderStudyCount: React.FC = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Disorder study-count</CardTitle>
+        <CardTitle>Genetic Source Study-Count</CardTitle>
         <CardDescription>Number of Publications </CardDescription>
       </CardHeader>
       <CardContent>
@@ -85,4 +87,4 @@ const DisorderStudyCount: React.FC = () => {
   );
 };
 
-export default DisorderStudyCount;
+export default GeneticsStudyCount;
