@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
         const url = `https://algorithmxcomp.pythonanywhere.com/api/studies/?page=${pageNum}`
 
         const response = await axios.get(url);
-        console.log(response);
+        // console.log(response);
         
         return NextResponse.json(response.data);
         
