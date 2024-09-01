@@ -1,27 +1,9 @@
-interface Disorder {
-    id: number;
-    disorder_name: string;
-};
-
-interface ResearchRegion {
-    id: number;
-    name: string;
-};
-
-interface BiologicalModality {
-    id: number;
-    modality_name: string;
-};
-
-interface GeneticSourceMaterial {
-    id: number;
-    material_type: string;
-};
-
-interface ArticleType  {
-    id: number;
-    article_name: string;
-};
+export interface ApiResponse {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Study[];
+}
 
 export interface Study {
     id: number;
@@ -33,7 +15,7 @@ export interface Study {
     title: string;
     year: number;
     journal_name: string;
-    impact_factor: number | null;
+    impact_factor: number;
     pmid: string;
     funding_source: string;
     lead_author: string;
@@ -58,5 +40,29 @@ export interface Study {
     should_exclude: boolean;
     study_designs: number;
     author_regions: number[];
-    length: number;
-};
+}
+
+interface Disorder {
+    id: number;
+    disorder_name: string;
+}
+
+interface ResearchRegion {
+    id: number;
+    name: string;
+}
+
+interface BiologicalModality {
+    id: number;
+    modality_name: string;
+}
+
+interface GeneticSourceMaterial {
+    id: number;
+    material_type: string;
+}
+
+interface ArticleType {
+    id: number;
+    article_name: string;
+}
