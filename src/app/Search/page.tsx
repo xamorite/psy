@@ -3,7 +3,6 @@
 import FilterButton from "@/components/filterBtn";
 import StudySkeleton from "@/components/studies/study-skeleton";
 import StudyList from "@/components/studies/StudyList";
-import { Button } from "@/components/ui/button";
 import { useGetStudyLists } from "@/hooks/use-get-studyView";
 import { DocumentState } from "@/lib/validators/document-validator";
 import {
@@ -11,7 +10,7 @@ import {
   Filter,
   Search,
 } from "lucide-react";
-import { useState } from "react";
+import {  useState } from "react";
 import { useGetSearchReasult } from "@/hooks/use-get-searchResults";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/useDebounce";
@@ -23,6 +22,7 @@ import {
   SheetHeader,
   SheetTitle
 } from "@/components/ui/sheet";
+import PaginationControls from "@/components/PaginationControls";
 
 
 const REGIONS = {
@@ -99,6 +99,7 @@ const YEAR = {
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [page, setPage] = useState<number>(3);
   const [filter, setFilter] = useState<DocumentState>({
     region: [],
     genomic: [],
@@ -106,8 +107,6 @@ const SearchPage = () => {
     article: [],
     year: []
   });
-
-  const debouncedSearchTerm = useDebounce(searchTerm, 400);
 
   const applyArrayFilter = ({
     category, value
@@ -130,13 +129,19 @@ const SearchPage = () => {
     }
   }
 
-  const { data: studies, isLoading, isError } = useGetStudyLists();
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 400);
+
+  const { data: studies, isLoading, isError } = useGetStudyLists(page);
 
   const { data: searches, isLoading: isSearching, isError: isSearchingError } = useGetSearchReasult(searchTerm, debouncedSearchTerm);
 
+  // const allResults = searches !== undefined ? searches?.results : studies?.results;
+  // console.log("allResult", allResults);
 
-  const allResults = searches !== undefined ? searches : studies;
-  console.log("allResult", allResults);
+  const nextPage = () => setPage((prevPage) => prevPage + 1);
+  const prevPage = () => setPage((prevPage) => Math.max(prevPage - 1, 1));
+
 
   return (
     <div className="w-full flex flex-col mx-auto mb-10">
@@ -314,198 +319,210 @@ const SearchPage = () => {
             <div>
               {(isLoading || isSearching) ? (
                 <div></div>
-              ) : (allResults && allResults.length > 0) ? (
-                <h1 className="text-2xl lg:text-2xl font-bold">{allResults.length} Results</h1>
+              ) : (studies?.results && studies?.results.length > 0) ? (
+                <h1 className="text-2xl lg:text-2xl font-bold">{studies?.results.length} Results</h1>
               ) : null}
             </div>
-            
+
             <div className='flex flex-col md:hidden'>
-            <Sheet>
-              <SheetTrigger className='group -m-2 flex items-center p-2 border rounded-md'>
-                <Filter
-                  aria-hidden='true'
-                  className='h-4 w-4 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
-                />
-                <span className='ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800'>
-                  Filter By
-                </span>
-              </SheetTrigger>
-              <SheetContent className='flex w-3/6 flex-col pr-0 sm:max-w-lg overflow-y-auto'>
-                <SheetHeader className='mt-6 space-y-2.5 pr-6'>
-                  <SheetTitle>
-                    <div className='flex gap-4 lg:gap-6'>
-                      <FilterButton name="Clear Filters" type="ghost" />
-                      <FilterButton name="Save Filters" type="outline" />
+              <Sheet>
+                <SheetTrigger className='group -m-2 flex items-center p-2 border rounded-md'>
+                  <Filter
+                    aria-hidden='true'
+                    className='h-4 w-4 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
+                  />
+                  <span className='ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800'>
+                    Filter By
+                  </span>
+                </SheetTrigger>
+                <SheetContent className='flex w-3/6 flex-col pr-0 sm:max-w-lg overflow-y-auto'>
+                  <SheetHeader className='mt-6 space-y-2.5 pr-6'>
+                    <SheetTitle>
+                      <div className='flex gap-4 lg:gap-6'>
+                        <FilterButton name="Clear Filters" type="ghost" />
+                        <FilterButton name="Save Filters" type="outline" />
+                      </div>
+                    </SheetTitle>
+                  </SheetHeader>
+                  <div>
+                    <h3 className='font-medium'>Year(s)</h3>
+                    <div className='pt-6'>
+                      <ul className='space-y-4'>{YEAR.options.map((option, optionIdx) => (
+                        <li key={option.value} className='flex items-center'>
+                          <input
+                            type='checkbox'
+                            id={`year-${optionIdx}`}
+                            onChange={() => {
+                              applyArrayFilter({
+                                category: "year",
+                                value: option.value
+                              })
+                            }}
+                            checked={filter.year.includes(option.value)}
+                            className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
+                          />
+                          <label
+                            htmlFor={`year-${optionIdx}`}
+                            className='ml-3 text-sm text-gray-600'>
+                            {option.label}
+                          </label>
+                        </li>
+                      ))}
+                      </ul>
+                      <div className='flex items-center mt-4 group cursor-pointer'>
+                        <p className='text-sm text-muted-foreground group-hover:text-gray-900'>show more</p>
+                        <ChevronDown className='ml-2 w-4 h-4 text-gray-400 group-hover:text-gray-500' />
+                      </div>
                     </div>
-                  </SheetTitle>
-                </SheetHeader>
-                <div>
-                  <h3 className='font-medium'>Year(s)</h3>
-                  <div className='pt-6'>
-                    <ul className='space-y-4'>{YEAR.options.map((option, optionIdx) => (
-                      <li key={option.value} className='flex items-center'>
-                        <input
-                          type='checkbox'
-                          id={`year-${optionIdx}`}
-                          onChange={() => {
-                            applyArrayFilter({
-                              category: "year",
-                              value: option.value
-                            })
-                          }}
-                          checked={filter.year.includes(option.value)}
-                          className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
-                        />
-                        <label
-                          htmlFor={`year-${optionIdx}`}
-                          className='ml-3 text-sm text-gray-600'>
-                          {option.label}
-                        </label>
-                      </li>
-                    ))}
-                    </ul>
-                    <div className='flex items-center mt-4 group cursor-pointer'>
-                      <p className='text-sm text-muted-foreground group-hover:text-gray-900'>show more</p>
-                      <ChevronDown className='ml-2 w-4 h-4 text-gray-400 group-hover:text-gray-500' />
+                  </div>
+
+                  <div>
+                    <h3 className='font-medium'>Region(s)</h3>
+                    <div className='pt-6'>
+                      <ul className='space-y-4'>{REGIONS.options.map((option, optionIdx) => (
+                        <li key={option.value} className='flex items-center'>
+                          <input
+                            type='checkbox'
+                            id={`region-${optionIdx}`}
+                            onChange={() => {
+                              applyArrayFilter({
+                                category: "region",
+                                value: option.value
+                              })
+                            }}
+                            checked={filter.region.includes(option.value)}
+                            className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
+                          />
+                          <label
+                            htmlFor={`region-${optionIdx}`}
+                            className='ml-3 text-sm text-gray-600'>
+                            {option.label}
+                          </label>
+                        </li>
+                      ))}</ul>
                     </div>
                   </div>
-                </div>
 
-                <div>
-                  <h3 className='font-medium'>Region(s)</h3>
-                  <div className='pt-6'>
-                    <ul className='space-y-4'>{REGIONS.options.map((option, optionIdx) => (
-                      <li key={option.value} className='flex items-center'>
-                        <input
-                          type='checkbox'
-                          id={`region-${optionIdx}`}
-                          onChange={() => {
-                            applyArrayFilter({
-                              category: "region",
-                              value: option.value
-                            })
-                          }}
-                          checked={filter.region.includes(option.value)}
-                          className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
-                        />
-                        <label
-                          htmlFor={`region-${optionIdx}`}
-                          className='ml-3 text-sm text-gray-600'>
-                          {option.label}
-                        </label>
-                      </li>
-                    ))}</ul>
+                  <div>
+                    <h3 className='font-medium'>Genomic Category</h3>
+                    <div className='pt-6'>
+                      <ul className='space-y-4'>{GENOMIC_CATEGORY.options.map((option, optionIdx) => (
+                        <li key={option.value} className='flex items-center'>
+                          <input
+                            type='checkbox'
+                            id={`genomic-${optionIdx}`}
+                            onChange={() => {
+                              applyArrayFilter({
+                                category: "genomic",
+                                value: option.value
+                              })
+                            }}
+                            checked={filter.genomic.includes(option.value)}
+                            className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
+                          />
+                          <label
+                            htmlFor={`genomic-${optionIdx}`}
+                            className='ml-3 text-sm text-gray-600'>
+                            {option.label}
+                          </label>
+                        </li>
+                      ))}</ul>
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <h3 className='font-medium'>Genomic Category</h3>
-                  <div className='pt-6'>
-                    <ul className='space-y-4'>{GENOMIC_CATEGORY.options.map((option, optionIdx) => (
-                      <li key={option.value} className='flex items-center'>
-                        <input
-                          type='checkbox'
-                          id={`genomic-${optionIdx}`}
-                          onChange={() => {
-                            applyArrayFilter({
-                              category: "genomic",
-                              value: option.value
-                            })
-                          }}
-                          checked={filter.genomic.includes(option.value)}
-                          className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
-                        />
-                        <label
-                          htmlFor={`genomic-${optionIdx}`}
-                          className='ml-3 text-sm text-gray-600'>
-                          {option.label}
-                        </label>
-                      </li>
-                    ))}</ul>
+                  <div>
+                    <h3 className='font-medium'>Disorder(s)</h3>
+                    <div className='pt-6'>
+                      <ul className='space-y-4'>{DISORDERS.options.map((option, optionIdx) => (
+                        <li key={option.value} className='flex items-center'>
+                          <input
+                            type='checkbox'
+                            id={`disorder-${optionIdx}`}
+                            onChange={() => {
+                              applyArrayFilter({
+                                category: "disorder",
+                                value: option.value
+                              })
+                            }}
+                            checked={filter.disorder.includes(option.value)}
+                            className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
+                          />
+                          <label
+                            htmlFor={`disorder-${optionIdx}`}
+                            className='ml-3 text-sm text-gray-600'>
+                            {option.label}
+                          </label>
+                        </li>
+                      ))}</ul>
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <h3 className='font-medium'>Disorder(s)</h3>
-                  <div className='pt-6'>
-                    <ul className='space-y-4'>{DISORDERS.options.map((option, optionIdx) => (
-                      <li key={option.value} className='flex items-center'>
-                        <input
-                          type='checkbox'
-                          id={`disorder-${optionIdx}`}
-                          onChange={() => {
-                            applyArrayFilter({
-                              category: "disorder",
-                              value: option.value
-                            })
-                          }}
-                          checked={filter.disorder.includes(option.value)}
-                          className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
-                        />
-                        <label
-                          htmlFor={`disorder-${optionIdx}`}
-                          className='ml-3 text-sm text-gray-600'>
-                          {option.label}
-                        </label>
-                      </li>
-                    ))}</ul>
+                  <div>
+                    <h3 className='font-medium'>Article Type</h3>
+                    <div className='pt-6'>
+                      <ul className='space-y-4'>{ARTICLE.options.map((option, optionIdx) => (
+                        <li key={option.value} className='flex items-center'>
+                          <input
+                            type='checkbox'
+                            id={`article-${optionIdx}`}
+                            onChange={() => {
+                              applyArrayFilter({
+                                category: "article",
+                                value: option.value
+                              })
+                            }}
+                            checked={filter.article.includes(option.value)}
+                            className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
+                          />
+                          <label
+                            htmlFor={`article-${optionIdx}`}
+                            className='ml-3 text-sm text-gray-600'>
+                            {option.label}
+                          </label>
+                        </li>
+                      ))}</ul>
+                    </div>
                   </div>
-                </div>
-
-                <div>
-                  <h3 className='font-medium'>Article Type</h3>
-                  <div className='pt-6'>
-                    <ul className='space-y-4'>{ARTICLE.options.map((option, optionIdx) => (
-                      <li key={option.value} className='flex items-center'>
-                        <input
-                          type='checkbox'
-                          id={`article-${optionIdx}`}
-                          onChange={() => {
-                            applyArrayFilter({
-                              category: "article",
-                              value: option.value
-                            })
-                          }}
-                          checked={filter.article.includes(option.value)}
-                          className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
-                        />
-                        <label
-                          htmlFor={`article-${optionIdx}`}
-                          className='ml-3 text-sm text-gray-600'>
-                          {option.label}
-                        </label>
-                      </li>
-                    ))}</ul>
-                  </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
+
+          {(isLoading || isSearching) ? (
+            new Array(10)
+              .fill(null)
+              .map((_, i) => <StudySkeleton key={i} />)
+          ) : (isError || isSearchingError) ? (
+            <div className="flex items-center col-span-3">
+              <span className="relative flex h-2 w-2 mr-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+              </span>
+              <p className="flex text-sm font-medium text-gray-900">Something went wrong</p>
+            </div>
+          ) : (studies?.results && studies?.results.length > 0) ? (
+            studies?.results?.map((study, i: number) => (
+              <StudyList key={i} study={study} />
+            ))
+          ) : (
+            <NotFound searchTerm={searchTerm} />
+          )}
+
+          {isError || isSearchingError ? (
+            null
+          ) : (
+            <PaginationControls
+              prevPage={prevPage}
+              nextPage={nextPage}
+              page={page}
+              count={studies?.count}
+              isLoading={isLoading}
+            />
+          )}
         </div>
 
-        {(isLoading || isSearching) ? (
-          new Array(10)
-            .fill(null)
-            .map((_, i) => <StudySkeleton key={i} />)
-        ) : (isError || isSearchingError) ? (
-          <div className="flex items-center col-span-3">
-            <span className="relative flex h-2 w-2 mr-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
-            </span>
-            <p className="flex text-sm font-medium text-gray-900">Something went wrong</p>
-          </div>
-        ) : (allResults && allResults.length > 0) ? (
-          allResults?.map((study, i: number) => (
-            <StudyList key={i} study={study} />
-          ))
-        ) : (
-          <NotFound searchTerm={searchTerm} />
-        )}
       </div>
-
     </div>
-    </div >
   );
 };
 
