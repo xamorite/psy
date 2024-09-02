@@ -9,12 +9,16 @@ export async function GET(req: NextRequest) {
 
 
         const title = searchParams.get("title");
-        // const year = searchParams.get("year");
+        const year = searchParams.get("year");
+        const region = searchParams.get("research_regions");
+        const disorder = searchParams.get("disorder");
+        const article = searchParams.get("article_type");
+        const pageNum = searchParams.get("page");
 
-        const url = `https://algorithmxcomp.pythonanywhere.com/api/studies/?title=${title}&year=`
+
+        const url = `https://algorithmxcomp.pythonanywhere.com/api/studies/?title=${title}&year=${year}&research_regions=${region}&disorder=${disorder}&article_type=${article}&page=${pageNum}`
 
         const response = await axios.get(url);
-        // console.log(response);
 
         return NextResponse.json(response.data);
 

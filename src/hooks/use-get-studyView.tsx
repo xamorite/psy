@@ -15,8 +15,6 @@ export const useGetStudyLists = (pageNum: number) => {
                 throw new Error("Failed to fetch study list")
             }
 
-            // console.log(response);
-
             return response.data;
         },
     });

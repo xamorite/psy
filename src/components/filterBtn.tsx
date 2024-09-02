@@ -5,15 +5,17 @@ interface filterButtonProps {
     name: string,
     className?: string
     type?: "link" | "default" | "destructive" | "outline" | "secondary" | "ghost" | null | undefined
+    onClick?: () => void 
 
 }
 
 
-const FilterButton = ({ name, className, type }: filterButtonProps) => {
+const FilterButton = ({ name, className, type, onClick }: filterButtonProps) => {
     return (
         <Button
             variant={type}
             className={cn('', className)}
+            onClick={onClick}
         >
             {name}
         </Button>

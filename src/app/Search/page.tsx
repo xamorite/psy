@@ -99,45 +99,42 @@ const YEAR = {
 
 const SearchPage = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [page, setPage] = useState<number>(3);
+  const [page, setPage] = useState<number>(1);
   const [filter, setFilter] = useState<DocumentState>({
-    region: [],
-    genomic: [],
-    disorder: [],
-    article: [],
-    year: []
+    region: "",
+    disorder: "",
+    article: "",
+    year: ""
   });
 
-  const applyArrayFilter = ({
-    category, value
+  const applyStringFilter = ({
+    category,
+    value
   }: {
     category: keyof typeof filter,
     value: string
   }) => {
-    const isFilterApplied = filter[category].includes(value as never)
-
-    if (isFilterApplied) {
-      setFilter((prev) => ({
-        ...prev,
-        [category]: prev[category].filter((v) => v !== value)
-      }))
-    } else {
-      setFilter((prev) => ({
-        ...prev,
-        [category]: [...prev[category], value]
-      }))
-    }
+    setFilter((prev) => ({
+      ...prev,
+      [category]: prev[category] === value ? "" : value
+    }));
   }
+
+  const clearFilters = () => {
+    setFilter((prev) => {
+      const newFilters = { ...prev };
+      Object.keys(newFilters).forEach((key) => {
+        newFilters[key as keyof typeof filter] = ""; 
+      });
+      return newFilters;
+    });
+  };
+  
 
 
   const debouncedSearchTerm = useDebounce(searchTerm, 400);
 
-  const { data: studies, isLoading, isError } = useGetStudyLists(page);
-
-  const { data: searches, isLoading: isSearching, isError: isSearchingError } = useGetSearchReasult(searchTerm, debouncedSearchTerm);
-
-  // const allResults = searches !== undefined ? searches?.results : studies?.results;
-  // console.log("allResult", allResults);
+  const { data: searches, isLoading, isError } = useGetSearchReasult(searchTerm, debouncedSearchTerm, page, filter);
 
   const nextPage = () => setPage((prevPage) => prevPage + 1);
   const prevPage = () => setPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -145,9 +142,6 @@ const SearchPage = () => {
 
   return (
     <div className="w-full flex flex-col mx-auto mb-10">
-
-      {/* <h1 className=" text-2xl lg:text-4xl font-bold">Search</h1> */}
-
       <div className="w-3/5 lg:max-w-2xl flex flex-col mx-auto mt-10 lg:mt-16 space-y-3">
         <div className="flex items-center justify-center ring-1 ring-gray-500 focus-within:ring-gray-400 rounded-md">
           <Search
@@ -162,14 +156,13 @@ const SearchPage = () => {
             autoComplete="off"
           />
         </div>
-
       </div>
 
       <div className='flex gap-6 mx-4 lg:mx-10 mt-20'>
         <div className='hidden md:flex md:flex-col lg:w-80 h-fit shrink sticky top-0 z-40 space-y-10'>
           <h2 className='text-4xl font-semibold'>Filter by:</h2>
           <div className='flex gap-4 lg:gap-6'>
-            <FilterButton name="Clear Filters" type="ghost" />
+            <FilterButton name="Clear Filters" type="ghost" onClick={clearFilters} />
             <FilterButton name="Save Filters" type="outline" />
           </div>
 
@@ -179,15 +172,15 @@ const SearchPage = () => {
               <ul className='space-y-4'>{YEAR.options.map((option, optionIdx) => (
                 <li key={option.value} className='flex items-center'>
                   <input
-                    type='checkbox'
+                    type='radio'
                     id={`year-${optionIdx}`}
                     onChange={() => {
-                      applyArrayFilter({
+                      applyStringFilter({
                         category: "year",
                         value: option.value
                       })
                     }}
-                    checked={filter.year.includes(option.value)}
+                    checked={filter.year === option.value}
                     className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
                   />
                   <label
@@ -211,15 +204,15 @@ const SearchPage = () => {
               <ul className='space-y-4'>{REGIONS.options.map((option, optionIdx) => (
                 <li key={option.value} className='flex items-center'>
                   <input
-                    type='checkbox'
+                    type='radio'
                     id={`region-${optionIdx}`}
                     onChange={() => {
-                      applyArrayFilter({
+                      applyStringFilter({
                         category: "region",
                         value: option.value
                       })
                     }}
-                    checked={filter.region.includes(option.value)}
+                    checked={filter.region === option.value}
                     className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
                   />
                   <label
@@ -232,21 +225,21 @@ const SearchPage = () => {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <h3 className='font-medium'>Genomic Category</h3>
             <div className='pt-6'>
               <ul className='space-y-4'>{GENOMIC_CATEGORY.options.map((option, optionIdx) => (
                 <li key={option.value} className='flex items-center'>
                   <input
-                    type='checkbox'
+                    type='radio'
                     id={`genomic-${optionIdx}`}
                     onChange={() => {
-                      applyArrayFilter({
+                      applyStringFilter({
                         category: "genomic",
                         value: option.value
                       })
                     }}
-                    checked={filter.genomic.includes(option.value)}
+                    checked={filter.genomic === option.value}
                     className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
                   />
                   <label
@@ -257,7 +250,7 @@ const SearchPage = () => {
                 </li>
               ))}</ul>
             </div>
-          </div>
+          </div> */}
 
           <div>
             <h3 className='font-medium'>Disorder(s)</h3>
@@ -265,15 +258,15 @@ const SearchPage = () => {
               <ul className='space-y-4'>{DISORDERS.options.map((option, optionIdx) => (
                 <li key={option.value} className='flex items-center'>
                   <input
-                    type='checkbox'
+                    type='radio'
                     id={`disorder-${optionIdx}`}
                     onChange={() => {
-                      applyArrayFilter({
+                      applyStringFilter({
                         category: "disorder",
                         value: option.value
                       })
                     }}
-                    checked={filter.disorder.includes(option.value)}
+                    checked={filter.disorder === option.value}
                     className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
                   />
                   <label
@@ -292,15 +285,15 @@ const SearchPage = () => {
               <ul className='space-y-4'>{ARTICLE.options.map((option, optionIdx) => (
                 <li key={option.value} className='flex items-center'>
                   <input
-                    type='checkbox'
+                    type='radio'
                     id={`article-${optionIdx}`}
                     onChange={() => {
-                      applyArrayFilter({
+                      applyStringFilter({
                         category: "article",
                         value: option.value
                       })
                     }}
-                    checked={filter.article.includes(option.value)}
+                    checked={filter.article === option.value}
                     className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
                   />
                   <label
@@ -317,10 +310,10 @@ const SearchPage = () => {
         <div className="w-full flex flex-col gap-6">
           <div className='flex items-center justify-between'>
             <div>
-              {(isLoading || isSearching) ? (
+              {isLoading  ? (
                 <div></div>
-              ) : (studies?.results && studies?.results.length > 0) ? (
-                <h1 className="text-2xl lg:text-2xl font-bold">{studies?.results.length} Results</h1>
+              ) : (searches?.results && searches?.results.length > 0) ? (
+                <h1 className="text-2xl lg:text-2xl font-bold">{searches?.results.length} Results</h1>
               ) : null}
             </div>
 
@@ -350,15 +343,15 @@ const SearchPage = () => {
                       <ul className='space-y-4'>{YEAR.options.map((option, optionIdx) => (
                         <li key={option.value} className='flex items-center'>
                           <input
-                            type='checkbox'
+                            type='radio'
                             id={`year-${optionIdx}`}
                             onChange={() => {
-                              applyArrayFilter({
+                              applyStringFilter({
                                 category: "year",
                                 value: option.value
                               })
                             }}
-                            checked={filter.year.includes(option.value)}
+                            checked={filter.year === option.value}
                             className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
                           />
                           <label
@@ -382,15 +375,15 @@ const SearchPage = () => {
                       <ul className='space-y-4'>{REGIONS.options.map((option, optionIdx) => (
                         <li key={option.value} className='flex items-center'>
                           <input
-                            type='checkbox'
+                            type='radio'
                             id={`region-${optionIdx}`}
                             onChange={() => {
-                              applyArrayFilter({
+                              applyStringFilter({
                                 category: "region",
                                 value: option.value
                               })
                             }}
-                            checked={filter.region.includes(option.value)}
+                            checked={filter.region === option.value}
                             className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
                           />
                           <label
@@ -402,22 +395,22 @@ const SearchPage = () => {
                       ))}</ul>
                     </div>
                   </div>
-
+{/* 
                   <div>
                     <h3 className='font-medium'>Genomic Category</h3>
                     <div className='pt-6'>
                       <ul className='space-y-4'>{GENOMIC_CATEGORY.options.map((option, optionIdx) => (
                         <li key={option.value} className='flex items-center'>
                           <input
-                            type='checkbox'
+                            type='radio'
                             id={`genomic-${optionIdx}`}
                             onChange={() => {
-                              applyArrayFilter({
+                              applyStringFilter({
                                 category: "genomic",
                                 value: option.value
                               })
                             }}
-                            checked={filter.genomic.includes(option.value)}
+                            checked={filter.genomic === option.value}
                             className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
                           />
                           <label
@@ -428,7 +421,7 @@ const SearchPage = () => {
                         </li>
                       ))}</ul>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div>
                     <h3 className='font-medium'>Disorder(s)</h3>
@@ -436,15 +429,15 @@ const SearchPage = () => {
                       <ul className='space-y-4'>{DISORDERS.options.map((option, optionIdx) => (
                         <li key={option.value} className='flex items-center'>
                           <input
-                            type='checkbox'
+                            type='radio'
                             id={`disorder-${optionIdx}`}
                             onChange={() => {
-                              applyArrayFilter({
+                              applyStringFilter({
                                 category: "disorder",
                                 value: option.value
                               })
                             }}
-                            checked={filter.disorder.includes(option.value)}
+                            checked={filter.disorder === option.value}
                             className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
                           />
                           <label
@@ -463,15 +456,15 @@ const SearchPage = () => {
                       <ul className='space-y-4'>{ARTICLE.options.map((option, optionIdx) => (
                         <li key={option.value} className='flex items-center'>
                           <input
-                            type='checkbox'
+                            type='radio'
                             id={`article-${optionIdx}`}
                             onChange={() => {
-                              applyArrayFilter({
+                              applyStringFilter({
                                 category: "article",
                                 value: option.value
                               })
                             }}
-                            checked={filter.article.includes(option.value)}
+                            checked={filter.article === option.value}
                             className='h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500'
                           />
                           <label
@@ -488,11 +481,11 @@ const SearchPage = () => {
             </div>
           </div>
 
-          {(isLoading || isSearching) ? (
+          {isLoading  ? (
             new Array(10)
               .fill(null)
               .map((_, i) => <StudySkeleton key={i} />)
-          ) : (isError || isSearchingError) ? (
+          ) : isError  ? (
             <div className="flex items-center col-span-3">
               <span className="relative flex h-2 w-2 mr-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
@@ -500,22 +493,22 @@ const SearchPage = () => {
               </span>
               <p className="flex text-sm font-medium text-gray-900">Something went wrong</p>
             </div>
-          ) : (studies?.results && studies?.results.length > 0) ? (
-            studies?.results?.map((study, i: number) => (
+          ) : (searches?.results && searches?.results.length > 0) ? (
+            searches?.results?.map((study, i: number) => (
               <StudyList key={i} study={study} />
             ))
           ) : (
             <NotFound searchTerm={searchTerm} />
           )}
 
-          {isError || isSearchingError ? (
+          {(isError ||  (searches?.results && searches?.results.length <= 0)) ? (
             null
           ) : (
             <PaginationControls
               prevPage={prevPage}
               nextPage={nextPage}
               page={page}
-              count={studies?.count}
+              count={searches?.count}
               isLoading={isLoading}
             />
           )}
