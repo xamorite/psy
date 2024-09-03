@@ -24,6 +24,7 @@ export interface Study {
     sample_size: string;
     age_range: string;
     mean_age: string;
+    recomended_articles:Study[];
     male_female_split: string;
     biological_risk_factor_studied: string;
     biological_rationale_provided: string;
