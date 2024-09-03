@@ -3,7 +3,6 @@
 import FilterButton from "@/components/filterBtn";
 import StudySkeleton from "@/components/studies/study-skeleton";
 import StudyList from "@/components/studies/StudyList";
-import { useGetStudyLists } from "@/hooks/use-get-studyView";
 import { DocumentState } from "@/lib/validators/document-validator";
 import {
   ChevronDown,
