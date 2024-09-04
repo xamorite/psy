@@ -23,7 +23,6 @@ export async function GET(req: NextRequest) {
         return NextResponse.json(response.data);
 
     } catch (error) {
-        console.log("Error fetching search results");
         return new Response("Error fetching search results", { status: 500 });
     }
 }

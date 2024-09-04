@@ -3,14 +3,13 @@
 import FilterButton from "@/components/filterBtn";
 import StudySkeleton from "@/components/studies/study-skeleton";
 import StudyList from "@/components/studies/StudyList";
-import { useGetStudyLists } from "@/hooks/use-get-studyView";
 import { DocumentState } from "@/lib/validators/document-validator";
 import {
   ChevronDown,
   Filter,
   Search,
 } from "lucide-react";
-import {  useState } from "react";
+import { useState } from "react";
 import { useGetSearchReasult } from "@/hooks/use-get-searchResults";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/useDebounce";
@@ -124,12 +123,12 @@ const SearchPage = () => {
     setFilter((prev) => {
       const newFilters = { ...prev };
       Object.keys(newFilters).forEach((key) => {
-        newFilters[key as keyof typeof filter] = ""; 
+        newFilters[key as keyof typeof filter] = "";
       });
       return newFilters;
     });
   };
-  
+
 
 
   const debouncedSearchTerm = useDebounce(searchTerm, 400);
@@ -159,7 +158,7 @@ const SearchPage = () => {
       </div>
 
       <div className='flex gap-6 mx-4 lg:mx-10 mt-20'>
-        <div className='hidden md:flex md:flex-col lg:w-80 h-fit shrink sticky top-0 z-40 space-y-10'>
+        <div className='hidden md:flex md:flex-col lg:w-80 h-fit shrink sticky top-0 z-30 space-y-10'>
           <h2 className='text-4xl font-semibold'>Filter by:</h2>
           <div className='flex gap-4 lg:gap-6'>
             <FilterButton name="Clear Filters" type="ghost" onClick={clearFilters} />
@@ -307,10 +306,10 @@ const SearchPage = () => {
           </div>
         </div>
 
-        <div className="w-full flex flex-col gap-6">
+        <div className="w-full flex flex-col">
           <div className='flex items-center justify-between'>
             <div>
-              {isLoading  ? (
+              {isLoading ? (
                 <div></div>
               ) : (searches?.results && searches?.results.length > 0) ? (
                 <h1 className="text-2xl lg:text-2xl font-bold">{searches?.results.length} Results</h1>
@@ -332,7 +331,7 @@ const SearchPage = () => {
                   <SheetHeader className='mt-6 space-y-2.5 pr-6'>
                     <SheetTitle>
                       <div className='flex gap-4 lg:gap-6'>
-                        <FilterButton name="Clear Filters" type="ghost" />
+                        <FilterButton name="Clear Filters" type="ghost" onClick={clearFilters} />
                         <FilterButton name="Save Filters" type="outline" />
                       </div>
                     </SheetTitle>
@@ -395,7 +394,7 @@ const SearchPage = () => {
                       ))}</ul>
                     </div>
                   </div>
-{/* 
+                  {/* 
                   <div>
                     <h3 className='font-medium'>Genomic Category</h3>
                     <div className='pt-6'>
@@ -481,39 +480,42 @@ const SearchPage = () => {
             </div>
           </div>
 
-          {isLoading  ? (
-            new Array(10)
-              .fill(null)
-              .map((_, i) => <StudySkeleton key={i} />)
-          ) : isError  ? (
-            <div className="flex items-center col-span-3">
-              <span className="relative flex h-2 w-2 mr-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
-              </span>
-              <p className="flex text-sm font-medium text-gray-900">Something went wrong</p>
-            </div>
-          ) : (searches?.results && searches?.results.length > 0) ? (
-            searches?.results?.map((study, i: number) => (
-              <StudyList key={i} study={study} />
-            ))
-          ) : (
-            <NotFound searchTerm={searchTerm} />
-          )}
+          <div className="flex flex-col gap-4 grow">
+            {isLoading ? (
+              new Array(10)
+                .fill(null)
+                .map((_, i) => <StudySkeleton key={i} />)
+            ) : isError ? (
+              <div className="flex items-center col-span-3">
+                <span className="relative flex h-2 w-2 mr-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
+                </span>
+                <p className="flex text-sm font-medium text-gray-900">Something went wrong</p>
+              </div>
+            ) : (searches?.results && searches?.results.length > 0) ? (
+              searches?.results?.map((study, i: number) => (
+                <StudyList key={i} study={study} />
+              ))
+            ) : (
+              <NotFound searchTerm={searchTerm} />
+            )}
+          </div>
 
-          {(isError ||  (searches?.results && searches?.results.length <= 0)) ? (
-            null
-          ) : (
-            <PaginationControls
-              prevPage={prevPage}
-              nextPage={nextPage}
-              page={page}
-              count={searches?.count}
-              isLoading={isLoading}
-            />
-          )}
+          <div>
+            {(isError || (searches?.results && searches?.results.length <= 0)) ? (
+              null
+            ) : (
+              <PaginationControls
+                prevPage={prevPage}
+                nextPage={nextPage}
+                page={page}
+                count={searches?.count}
+                isLoading={isLoading}
+              />
+            )}
+          </div>
         </div>
-
       </div>
     </div>
   );

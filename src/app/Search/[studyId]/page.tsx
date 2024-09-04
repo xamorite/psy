@@ -1,8 +1,5 @@
-"use client";
-import DetailList from "@/components/studies/DetailList";
+import { getDetails } from "@/action/details";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
   SheetClose,
@@ -13,9 +10,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useGetStudyLists } from "@/hooks/use-get-detail-View";
-
-import { Link } from "lucide-react";
+import { Study } from "@/types/studyViewList";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface pageProps {
   params: {
@@ -23,48 +20,63 @@ interface pageProps {
   };
 }
 
-const Detail = ({ params }: pageProps) => {
+const Detail = async ({ params }: pageProps) => {
   const { studyId } = params;
-  const { data: detail, isLoading, isError } = useGetStudyLists(studyId);
+
+  const detail: Study = await getDetails(studyId);
+
+  if(!detail) {
+    return notFound()
+  }
 
   return (
-    <div key={detail?.id} className="flex  p-5">
-      <section className="w-[30vw] pr-4 space-y-4 hidden lg:block">
-        <h1 className="text-xl ">Research Overview</h1>
+    <div key={detail?.id} className="w-full flex justify-center p-5">
+      <section className="hidden w-60 shrink-0 pr-4 space-y-4 lg:block">
+        <h1 className="text-xl font-semibold">Research Overview</h1>
         <div className="space-y-3">
-          <h1 className="text-primary">Journal Name</h1>
+          <div className="text-primary font-medium">Journal Name</div>
           <p className="text-sm">{detail?.journal_name}</p>
-          <h1 className="text-primary">PMID</h1>
+          <div className="text-primary font-medium">PMID</div>
           <p className="text-sm">{detail?.pmid}</p>
-          <h1 className="text-primary">Year</h1>
+          <div className="text-primary font-medium">Year</div>
           <p className="text-sm">{detail?.year}</p>
-          <h1 className="text-primary">Biological Modal</h1>
-          {/* <div className="text-sm">{detail?.biological_modalities.map((v,i) => (
-              <div key={i} className="text-sm">{v}</div>
-            ))}</div> */}
-          <h1 className="text-primary">Biological Risk</h1>
+          <div className="text-primary font-medium">Biological Modal</div>
+          <div className="text-sm">{detail?.biological_modalities?.map((v, i) => (
+            <div key={i} className="text-sm">{v}</div>
+          ))}</div>
+          <div className="text-primary font-medium">Biological Risk</div>
           <p className="text-sm">{detail?.biological_risk_factor_studied}</p>
-          <h1 className="text-primary">Disorder</h1>
-          <p className="text-sm">PTSD and Appetitive Agression</p>
-          <h1 className="text-primary">Phenotype</h1>
-          <p className="text-sm">{detail?.phenotype}</p>
-          <h1 className="text-primary">Region</h1>
+          <div className="text-primary font-medium">Disorder</div>
           <div>
-            {/* {detail?.research_regions?.map((region) => (
-              <div key={region} className="text-sm">
-                {region ?? "none"}
+            {detail?.disorder?.map((disorder) => (
+              <div key={disorder.id} className="text-sm">
+                {disorder.disorder_name}
               </div>
-            ))} */}
+            ))}
           </div>
-          <h1 className="text-primary">Sample Size</h1>
+          <div className="text-primary font-medium">Phenotype</div>
+          <p className="text-sm">{detail?.phenotype}</p>
+          <div className="text-primary font-medium">Region</div>
+          <div>
+            {detail?.research_regions?.map((region, i) => (
+              <div key={i} className="text-sm">
+                <p>{region}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-primary font-medium">Sample Size</div>
           <p className="text-sm">{detail?.sample_size}</p>
-          <h1 className="text-primary">Age Range</h1>
+          <div className="text-primary font-medium">Age Range</div>
           <p className="text-sm">{detail?.age_range}</p>
-          <h1 className="text-primary">Gender</h1>
-          <p className="text-sm">Male Only</p>
-          <h1 className="text-primary">Geetic Source Material</h1>
-          <p className="text-sm">saliva</p>
-          <h1 className="text-primary">Article Type</h1>
+          <div className="text-primary font-medium">Gender</div>
+          <p className="text-sm">{detail?.male_female_split}</p>
+          <div className="text-primary font-medium">Genetic Source Material</div>
+          <p className="text-sm">{detail?.genetic_source_materials?.map((g, i) => (
+            <div key={i} className="text-sm">
+              {g}
+            </div>
+          ))}</p>
+          <div className="text-primary font-medium">Article Type</div>
           <div>
             {detail?.article_type?.map((article) => (
               <div key={article.id} className="text-sm">
@@ -72,16 +84,17 @@ const Detail = ({ params }: pageProps) => {
               </div>
             ))}
           </div>
-          <h1 className="text-primary">Study Design</h1>
+          <div className="text-primary font-medium">Study Design</div>
           <p className="text-sm">{detail?.study_designs}</p>
         </div>
       </section>
-      <div className="space-y-2">
-        <h1 className="font-bold text-xl lg:text-3xl">{detail?.title}</h1>
+
+      <div className="max-w-4xl flex flex-col gap-2">
+        <h2 className="font-bold text-xl lg:text-3xl tracking-tight">{detail?.title}</h2>
         <p className="text-muted-foreground underline">{detail?.lead_author}</p>
         <p className="text-blue-700 text-sm">Share publication</p>
         <div className="h-1 w-full bg-slate-500"></div>
-        <h2 className="text-primary text-xl">Abstract</h2>
+        <h3 className="text-primary text-xl">Abstract</h3>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -91,7 +104,7 @@ const Detail = ({ params }: pageProps) => {
           pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
           culpa qui officia deserunt mollit anim id est laborum.
         </p>
-        <h2 className="text-primary text-xl">Introduction</h2>
+        <h3 className="text-primary text-xl">Introduction</h3>
         <p>
           Sed ut perspiciatis unde omnis iste natus error sit voluptatem
           accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
@@ -106,53 +119,39 @@ const Detail = ({ params }: pageProps) => {
         <h6 className="text-muted-foreground hover:cursor-pointer hover:text-primary hover:underline">
           Continue reading
         </h6>
-        <div className="ms-auto mt-20 space-x-3 lg:hidden">
+
+        <div className="mx-auto mt-20 space-x-3 lg:hidden">
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline">Related Search</Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent className="flex flex-col overflow-y-auto">
               <SheetHeader>
-                <SheetTitle>Research Overview</SheetTitle>
-                <SheetDescription>
-                  Make changes to your profile here. Click save when you're
+                <SheetTitle className="text-xl font-semibold my-5">Related Search</SheetTitle>
+                {/* <SheetDescription>
+                  Make changes to your profile here. Click save when you&apos;re
                   done.
-                </SheetDescription>
+                </SheetDescription> */}
               </SheetHeader>
-              <div className=" ps-4 space-y-4">
-                <h1 className="text-xl ">Related Search</h1>
-                <div className="hover:underline hover:cursor-pointer">
-                  <h3 className="text-blue-600">
-                    Genetic variation in neuropeptide Y interacts with childhood
-                    trauma to influence anxiety sensitivity
-                  </h3>
-                  <p>Womersley JS</p>
-                  <p className="text-muted-foreground">2021</p>
-                </div>
-                <div className="hover:underline hover:cursor-pointer">
-                  <h3 className="text-blue-600">
-                    Genetic variation in neuropeptide Y interacts with childhood
-                    trauma to influence anxiety sensitivity
-                  </h3>
-                  <p>Womersley JS</p>
-                  <p className="text-muted-foreground">2021</p>
-                </div>
-                <div className="hover:underline hover:cursor-pointer">
-                  <h3 className="text-blue-600">
-                    Genetic variation in neuropeptide Y interacts with childhood
-                    trauma to influence anxiety sensitivity
-                  </h3>
-                  <p>Womersley JS</p>
-                  <p className="text-muted-foreground">2021</p>
-                </div>
+              <div className="space-y-4">
+                {detail?.recommended_articles?.map((article) => (
+                  <div
+                    key={article.id}
+                    className="hover:underline hover:cursor-pointer"
+                  >
+                    <Link
+                      href={`/Search/${article.id}`}
+                      className="text-blue-600">
+                      {article.title}
+                    </Link>
+                    <p>{article.lead_author}</p>
+                    <p className="text-muted-foreground">{article.year}</p>
+                  </div>
+                ))}
               </div>
-              <SheetFooter>
-                <SheetClose asChild>
-                  <Button type="submit">Save changes</Button>
-                </SheetClose>
-              </SheetFooter>
             </SheetContent>
           </Sheet>
+
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline">Research Overview</Button>
@@ -161,7 +160,7 @@ const Detail = ({ params }: pageProps) => {
               <SheetHeader>
                 <SheetTitle>Research Overview</SheetTitle>
                 <SheetDescription>
-                  Make changes to your profile here. Click save when you're
+                  Make changes to your profile here. Click save when you&apos;re
                   done.
                 </SheetDescription>
               </SheetHeader>
@@ -175,16 +174,21 @@ const Detail = ({ params }: pageProps) => {
           </Sheet>
         </div>
       </div>
-      <section className="w-[30vw] ps-4 space-y-4  hidden lg:block">
-        <h1 className="text-xl ">Related Search</h1>
-        <div className="text-sm">
-          {detail?.recomended_articles?.map((article) => (
+
+      <section className="hidden w-64 shrink-0 pl-6 space-y-4 lg:block">
+        <h1 className="text-xl font-semibold">Related Search</h1>
+        <div className="text-sm flex flex-col gap-4">
+          {detail?.recommended_articles?.map((article) => (
             <div
               key={article.id}
-              className="hover:underline hover:cursor-pointer"
+              className="hover:underline hover:cursor-pointer "
             >
-              <h3 className="text-blue-600">{article.title}</h3>
-              <p>{article.lead_author}</p>
+              <Link
+                href={`/Search/${article.id}`}
+                className="font-medium text-blue-600">
+                {article.title}
+              </Link>
+              <p className="text-gray-800">{article.lead_author}</p>
               <p className="text-muted-foreground">{article.year}</p>
             </div>
           ))}

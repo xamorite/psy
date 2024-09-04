@@ -1,53 +1,69 @@
-"use client"
+import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React, { useState } from 'react';
-const NavBar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+import { buttonVariants } from "./ui/button";
+import MobileNav from "./MobileNav";
 
-  const toggleNavbar = () => {
-    setIsOpen(!isOpen);
-  };
+
+const NavBar = () => {
   return (
-    <nav className=" p-4">
-    <div className="flex justify-between">
-      <div className="text-primary text-2xl lg:text-4xl font-bold ">Psychgen_Portal</div>
-      <div className="flex justify-end items-baseline">
-      
-      <div className={`flex flex-col lg:flex-col  lg:items-center   ${isOpen ? 'block' : 'hidden'}`}>
-        <Link href="/" className="hover:text-white hover:bg-green-700 px-3 py-2 rounded">Home</Link>
-        <Link href="/Search" className="hovertext-white hover:bg-green-700 px-3 py-2 rounded">Search</Link>
-        <Link href="/Analysis" className="hovertext-white hover:bg-green-700 px-3 py-2 rounded">Analytics</Link>
-        <Link href="/Details" className="hover:text-white hover:bg-green-700 px-3 py-2 rounded">Contact</Link>
+    <nav className="sticky top-0 z-40 flex items-center mx-auto w-full px-2.5 md:px-6 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className=" flex justify-center items-center h-14">
+
+        <Link href="/" className="flex items-center space-x-2 mr-4">
+          <div className="text-primary text-lg font-bold ">
+            Psychgen_Portal
+          </div>
+        </Link>
+
+        <div className="hidden lg:flex items-center gap-6 pl-6">
+          <Link
+            href="/Search"
+            className="transition-colors hover:text-primary font-medium"
+          >
+            Search
+          </Link>
+
+          <Link
+            href="/Analysis"
+            className="transition-colors hover:text-primary font-medium"
+          >
+            Analysis
+          </Link>
+        </div>
       </div>
-      <div className="flex flex-col lg:flex-row lg:hidden px-3 my-2 ">
-        <button onClick={toggleNavbar} className=" focus:outline-none">
-          {isOpen ? (
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+
+      <div className="hidden ml-auto lg:flex items-center justify-between space-x-2 ">
+        <div className="flex items-center space-x-4">
+          <Link
+            href="/SignUp"
+            className="transition-colors hover:text-primary font-medium"
+          >
+            Sign up
+          </Link>
+
+          <Link
+            href='Login'
+            className="font-medium"
+          >
+            <div
+              className={cn(
+                buttonVariants({
+                  variant: "ghost",
+                }),
+                "transition-colors hover:text-primary"
+              )}
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-          )}
-        </button>
+              Login
+            </div>
+          </Link>
+        </div>
       </div>
+
+      {/* mobile nav */}
+      <div className="lg:hidden ml-auto">
+        <MobileNav />
       </div>
-     
-    </div>
-  </nav>
+    </nav>
   );
 };
 
