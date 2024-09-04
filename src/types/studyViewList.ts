@@ -8,9 +8,9 @@ export interface ApiResponse {
 export interface Study {
     id: number;
     disorder: Disorder[];
-    research_regions: ResearchRegion[];
-    biological_modalities: BiologicalModality[];
-    genetic_source_materials: GeneticSourceMaterial[];
+    research_regions: string[];
+    biological_modalities: string[];
+    genetic_source_materials: string[];
     article_type: ArticleType[];
     title: string;
     year: number;
@@ -24,7 +24,7 @@ export interface Study {
     sample_size: string;
     age_range: string;
     mean_age: string;
-    recomended_articles:Study[];
+    recommended_articles: Study[];
     male_female_split: string;
     biological_risk_factor_studied: string;
     biological_rationale_provided: string;
@@ -48,10 +48,10 @@ interface Disorder {
     disorder_name: string;
 }
 
-interface ResearchRegion {
-    id: number;
-    name: string;
-}
+// interface ResearchRegion {
+//     id: number;
+//     name: string;
+// }
 
 interface BiologicalModality {
     id: number;
