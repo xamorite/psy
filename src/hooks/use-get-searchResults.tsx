@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 
 interface SearchProps {
+    searchTerm: string,
     year: string
     disorder: string
     region: string
@@ -10,7 +11,7 @@ interface SearchProps {
 }
 
 
-export const useGetSearchReasult = ( searchTerm: string, debouncedSearchTerm: string, pageNum: number, {year, region, disorder, article }: SearchProps) => {
+export const useGetSearchResult = ( debouncedSearchTerm: string, pageNum: number, { searchTerm, year, region, disorder, article }: SearchProps) => {
     const query = useQuery<ApiResponse, Error>({
         queryKey: ['searchResults', debouncedSearchTerm, year, region, disorder, article, pageNum],
         queryFn: async () => {

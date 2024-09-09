@@ -10,7 +10,7 @@ import {
   Search,
 } from "lucide-react";
 import { useState } from "react";
-import { useGetSearchReasult } from "@/hooks/use-get-searchResults";
+import {  useGetSearchResult } from "@/hooks/use-get-searchResults";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/useDebounce";
 import NotFound from "@/components/NotFound";
@@ -22,6 +22,7 @@ import {
   SheetTitle
 } from "@/components/ui/sheet";
 import PaginationControls from "@/components/PaginationControls";
+import AdvancedSearch from "@/components/AdvancedSearch";
 
 
 const REGIONS = {
@@ -97,14 +98,15 @@ const YEAR = {
 
 
 const SearchPage = () => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
   const [page, setPage] = useState<number>(1);
   const [filter, setFilter] = useState<DocumentState>({
+    searchTerm: "",
     region: "",
     disorder: "",
     article: "",
     year: ""
   });
+
 
   const applyStringFilter = ({
     category,
@@ -131,9 +133,9 @@ const SearchPage = () => {
 
 
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 400);
+  const debouncedSearchTerm = useDebounce(filter.searchTerm, 400);
 
-  const { data: searches, isLoading, isError } = useGetSearchReasult(searchTerm, debouncedSearchTerm, page, filter);
+  const { data: searches, isLoading, isError } = useGetSearchResult(debouncedSearchTerm, page, filter);
 
   const nextPage = () => setPage((prevPage) => prevPage + 1);
   const prevPage = () => setPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -143,18 +145,19 @@ const SearchPage = () => {
     <div className="w-full flex flex-col mx-auto mb-10">
       <div className="w-3/5 lg:max-w-2xl flex flex-col mx-auto mt-10 lg:mt-16 space-y-3">
         <div className="flex items-center justify-center ring-1 ring-gray-500 focus-within:ring-gray-400 rounded-md">
-          <Search
+        <Search
             className='size-5 ml-4 text-gray-700 group-hover:text-gray-900 dark:text-white dark:group-hover:text-white'
             aria-hidden='true'
           />
           <Input
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            value={filter.searchTerm}
+            onChange={(e) => setFilter({ ...filter, searchTerm: e.target.value })}
             className='border-0 dark:text-white dark:placeholder:text-white'
             placeholder='Search for titles'
             autoComplete="off"
           />
         </div>
+        <AdvancedSearch setFilter={setFilter} />
       </div>
 
       <div className='flex gap-6 mx-4 lg:mx-10 mt-20'>
@@ -498,7 +501,7 @@ const SearchPage = () => {
                 <StudyList key={i} study={study} />
               ))
             ) : (
-              <NotFound searchTerm={searchTerm} />
+              <NotFound searchTerm={filter.searchTerm} />
             )}
           </div>
 
