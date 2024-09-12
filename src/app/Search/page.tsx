@@ -166,10 +166,10 @@ const SearchPage = () => {
         <ul className='w-3/5 lg:max-w-2xl bg-muted flex flex-col justify-center absolute top-[72px] lg:top-24 z-40 mx-auto space-y-2 rounded-lg'>
           {
             suggestion?.study_titles?.map((title, i) => (
-              <li key={i} className='p-2'>
+              <li key={i} className='p-2 hover:bg-gray-200'>
                 <Link
                   href='#'
-                  className='font-medium tracking-tight text-balance hover:text-gray-600'
+                  className='font-medium tracking-tight text-balance'
                 >
                   {title}
                 </Link>
