@@ -334,7 +334,7 @@ const SearchPage = () => {
               {isLoading ? (
                 <div></div>
               ) : (searches?.results && searches?.results.length > 0) ? (
-                <h1 className="text-2xl lg:text-2xl font-bold">{searches?.results.length} Results</h1>
+                <h1 className="text-2xl lg:text-2xl font-bold">{searches?.count} Results</h1>
               ) : null}
             </div>
 
