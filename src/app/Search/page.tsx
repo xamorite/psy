@@ -10,7 +10,7 @@ import {
   Search,
 } from "lucide-react";
 import { useState } from "react";
-import {  useGetSearchResult } from "@/hooks/use-get-searchResults";
+import { useGetSearchResult } from "@/hooks/use-get-searchResults";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/useDebounce";
 import NotFound from "@/components/NotFound";
@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/sheet";
 import PaginationControls from "@/components/PaginationControls";
 import AdvancedSearch from "@/components/AdvancedSearch";
+import { useGetSuggestion } from "@/hooks/use-get-suggestion";
+import Link from "next/link";
 
 
 const REGIONS = {
@@ -136,16 +138,19 @@ const SearchPage = () => {
   const debouncedSearchTerm = useDebounce(filter.searchTerm, 400);
 
   const { data: searches, isLoading, isError } = useGetSearchResult(debouncedSearchTerm, page, filter);
+  const { data: suggestion } = useGetSuggestion(filter.searchTerm)
+
+  console.log('suggestion', suggestion);
 
   const nextPage = () => setPage((prevPage) => prevPage + 1);
   const prevPage = () => setPage((prevPage) => Math.max(prevPage - 1, 1));
 
 
   return (
-    <div className="w-full flex flex-col mx-auto mb-10">
+    <div className="w-full relative flex flex-col mx-auto mb-10">
       <div className="w-3/5 lg:max-w-2xl flex flex-col mx-auto mt-10 lg:mt-16 space-y-3">
         <div className="flex items-center justify-center ring-1 ring-gray-500 focus-within:ring-gray-400 rounded-md">
-        <Search
+          <Search
             className='size-5 ml-4 text-gray-700 group-hover:text-gray-900 dark:text-white dark:group-hover:text-white'
             aria-hidden='true'
           />
@@ -154,10 +159,24 @@ const SearchPage = () => {
             onChange={(e) => setFilter({ ...filter, searchTerm: e.target.value })}
             className='border-0 dark:text-white dark:placeholder:text-white'
             placeholder='Search for titles'
-            autoComplete="off"
+            autoComplete="off" 
           />
         </div>
         <AdvancedSearch setFilter={setFilter} />
+        <ul className='w-3/5 lg:max-w-2xl bg-muted flex flex-col justify-center absolute top-[72px] lg:top-24 z-40 mx-auto space-y-2 rounded-lg'>
+          {
+            suggestion?.study_titles?.map((title, i) => (
+              <li key={i} className='p-2 hover:bg-gray-200'>
+                <Link
+                  href='#'
+                  className='font-medium tracking-tight text-balance'
+                >
+                  {title}
+                </Link>
+              </li>
+            ))
+          }
+        </ul>
       </div>
 
       <div className='flex gap-6 mx-4 lg:mx-10 mt-20'>
