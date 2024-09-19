@@ -158,7 +158,7 @@ const Detail = async ({ params }: pageProps) => {
         <p>
           {detail.abstract}
         </p>
-        <h3 className="text-primary text-xl">Introduction</h3>
+        {/* <h3 className="text-primary text-xl">Introduction</h3>
         <p>
           Sed ut perspiciatis unde omnis iste natus error sit voluptatem
           accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
@@ -172,7 +172,7 @@ const Detail = async ({ params }: pageProps) => {
         </p>
         <h6 className="text-muted-foreground hover:cursor-pointer hover:text-primary hover:underline">
           Continue reading
-        </h6>
+        </h6> */}
 
         <div className="mx-auto mt-20 space-x-3 lg:hidden">
           <Sheet>
