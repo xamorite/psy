@@ -36,6 +36,9 @@ const Detail = async ({ params }: pageProps) => {
     });
   });
 
+  const date = new Date(detail.date);
+  const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+
 
   if (!detail) {
     return notFound()
@@ -58,6 +61,8 @@ const Detail = async ({ params }: pageProps) => {
           ))}</div>
           <div className="text-primary font-medium">Biological Risk</div>
           <p className="text-sm">{detail?.biological_risk_factor_studied}</p>
+          <div className="text-primary font-medium">Citation</div>
+          <p className="text-sm">{detail?.citation}</p>
           <div className="text-primary font-medium">Disorder</div>
           <div>
             {detail?.disorder?.map((disorder) => (
@@ -101,26 +106,41 @@ const Detail = async ({ params }: pageProps) => {
         </div>
       </section>
 
-      <div className="max-w-4xl flex flex-col gap-2">
+      <div className="max-w-4xl flex flex-col justify-center gap-2">
+        <div className='font-semibold space-y-1'>
+          <div className='space-x-1'>
+            <span>{detail.journal_name},</span>{" "}
+            <span>Vol.{detail.volume},</span>{" "}
+            <span>{formattedDate},</span>{" "}
+            <span>pp.{detail.pages}</span>{" "}
+          </div>
+          <div>
+            <span>ISSN:{" "}{detail.issue}</span>{" "}
+          </div>
+          <div>
+            DOI:{" "}<span>{detail.DOI}</span>
+          </div>
+        </div>
+
         <h2 className="font-bold text-xl lg:text-3xl tracking-tight">{detail?.title}</h2>
-        <p className="text-muted-foreground underline">{detail?.lead_author}</p>
+        {/* <p className="text-muted-foreground underline">{detail?.lead_author}</p> */}
         <p className="text-blue-700 text-sm">Share publication</p>
         <div className="h-1 w-full bg-slate-500" />
 
         <div>
 
           <div className="w-full flex items-center justify-between">
-          <h2 className='text-primary text-xl mt-4 mb-3'>Authors</h2>
+            <h2 className='text-primary text-xl mt-4 mb-3'>Authors</h2>
 
             <div className="flex py-2">
               <DropdownMenu>
                 <DropdownMenuTrigger className="flex justify-center font-medium text-gray-700 hover:bg-gray-50 border px-4 py-1 rounded-sm">
-                  Authors
+                  All Authors
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   {detail?.authors_affiliations?.authors?.map((author, i) => (
                     <div className="text-left w-full  px-4 py-2 text-sm" key={i}>
-                     -{author.name}
+                      -{author.name}
                     </div>
                   ))}
                 </DropdownMenuContent>
@@ -133,9 +153,13 @@ const Detail = async ({ params }: pageProps) => {
             {limitedAuthors?.map((author, index) => (
               <div key={index}>
 
-                {author.affiliation_numbers.map((affiliationNumber) => (
-                  <sup className='font-medium text-lg' key={affiliationNumber}>{affiliationNumber}</sup>
-                ))}
+                {author.affiliation_numbers
+                  .map((affiliationNumber, index) => (
+                    <sup className='font-medium text-lg' key={affiliationNumber}>
+                      {affiliationNumber}
+                      {index < author.affiliation_numbers.length - 1 && ','}
+                    </sup>
+                  ))}
 
                 {author.name}
               </div>
@@ -143,7 +167,7 @@ const Detail = async ({ params }: pageProps) => {
           </div>
 
           <div className="w-full flex flex-col gap-2 my-3">
-          <h2 className='text-primary text-xl mt-4 mb-3'>Affiliations</h2>
+            <h2 className='text-primary text-xl mt-4 mb-3'>Affiliations</h2>
 
             {Array.from(limitedAffiliationNumbers).map((key: any) => (
               <p key={key} className='font-medium'>
@@ -158,21 +182,11 @@ const Detail = async ({ params }: pageProps) => {
         <p>
           {detail.abstract}
         </p>
-        {/* <h3 className="text-primary text-xl">Introduction</h3>
-        <p>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-          accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae
-          ab illo inventore veritatis et quasi architecto beatae vitae dicta
-          sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-          aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos
-          qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui
-          dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed
-          quia non numquam eius modi tempora incidunt ut labore et dolore magnam
-          aliquam quaerat voluptatem.
-        </p>
-        <h6 className="text-muted-foreground hover:cursor-pointer hover:text-primary hover:underline">
-          Continue reading
-        </h6> */}
+
+        <div className='font-medium'>
+          <span className='text-primary text-xl'>Keyword</span>:{" "}
+          <span className='font-semibold'>{detail.keyword}</span>
+        </div>
 
         <div className="mx-auto mt-20 space-x-3 lg:hidden">
           <Sheet>
