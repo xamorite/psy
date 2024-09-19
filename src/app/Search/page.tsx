@@ -158,14 +158,14 @@ const SearchPage = () => {
             value={filter.searchTerm}
             onChange={(e) => setFilter({ ...filter, searchTerm: e.target.value })}
             className='border-0 dark:text-white dark:placeholder:text-white'
-            placeholder='Search for titles'
+            placeholder='Search for disorders'
             autoComplete="off" 
           />
         </div>
         <AdvancedSearch setFilter={setFilter} />
         <ul className='w-3/5 lg:max-w-2xl bg-muted flex flex-col justify-center absolute top-[72px] lg:top-24 z-40 mx-auto space-y-2 rounded-lg'>
           {
-            suggestion?.study_titles?.map((title, i) => (
+            suggestion?.disorders?.map((title, i) => (
               <li key={i} className='p-2 hover:bg-gray-200'>
                 <Link
                   href='#'
