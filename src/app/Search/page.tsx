@@ -168,7 +168,7 @@ const SearchPage = () => {
             suggestion?.disorders?.map(disorder => (
               <li key={disorder.id} className='p-2 hover:bg-gray-200'>
                 <Link
-                  href='#'
+                  href={`/Search/${disorder.id}`}
                   className='font-medium tracking-tight text-balance'
                 >
                   {disorder.disorder_name}
