@@ -50,9 +50,9 @@ export default function Home() {
               psychiatric genomics, organized for your convenience.
             </p>
             <SearchPublication />
-            <Link href="#" className={buttonVariants()}>
-              Use Advanced Search
-            </Link>
+            <Link className={buttonVariants(
+          {size:'lg', className:""}
+        )} href="/Search">Use Advanced search</Link>
           </div>
           <div className="mx-auto">
             <Image
@@ -82,9 +82,9 @@ export default function Home() {
               Uncover a comprehensive overview of existing studies in African
               psychiatric genomics, organized for your convenience.
             </p>
-            <Button className="w-fit px-16 py-7 text-lg self-center lg:self-start">
-              Learn More
-            </Button>
+            <Link className={buttonVariants(
+          {size:'lg', className:""}
+        )} href="/Analysis">Learn more</Link>
           </div>
         </div>
       </section>

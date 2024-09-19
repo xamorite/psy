@@ -24,8 +24,6 @@ const YearlyStudyCount: React.FC = () => {
   const chartData = year?.map((data) => ({
     year: data.year,
     study_count: data.study_count,
-    citation: data.citation,
-    impact_factor: data.impact_factor
   }));
 
   const chartConfig = {
@@ -33,14 +31,6 @@ const YearlyStudyCount: React.FC = () => {
       label: "Desktop",
       color: "hsl(var(--chart-1))",
     },
-    mobile:{
-      label: "Mobile",
-      color: "hsl(var(--chart-2))",
-    },
-    other:{
-      label: "Mobile",
-      color: "hsl(var(--chart-2))",
-    }
   };
 
   return (
@@ -65,20 +55,6 @@ const YearlyStudyCount: React.FC = () => {
             />
             <Line
               dataKey="study_count"
-              type="linear"
-              stroke="var(--color-desktop)"
-              strokeWidth={2}
-              dot={false}
-            />
-             <Line
-              dataKey="citation"
-              type="linear"
-              stroke="var(--color-desktop)"
-              strokeWidth={2}
-              dot={false}
-            />
-             <Line
-              dataKey="impact_factor"
               type="linear"
               stroke="var(--color-desktop)"
               strokeWidth={2}
