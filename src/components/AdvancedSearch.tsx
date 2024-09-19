@@ -46,7 +46,7 @@ const AdvancedSearch: React.FC<ChildComponentProps> = ({ setFilter }) => {
 
     return <Dialog>
         <DialogTrigger asChild>
-            <Button variant="link">Use Advanced Search</Button>
+            <Button variant="link" className="w-fit self-center">Use Advanced Search</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
