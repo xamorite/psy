@@ -24,6 +24,8 @@ const YearlyStudyCount: React.FC = () => {
   const chartData = year?.map((data) => ({
     year: data.year,
     study_count: data.study_count,
+    impact_factor: data.impact_factor,
+    citation :data.citation
   }));
 
   const chartConfig = {
@@ -31,12 +33,17 @@ const YearlyStudyCount: React.FC = () => {
       label: "Desktop",
       color: "hsl(var(--chart-1))",
     },
+    mobile: {
+      label: "Desktop",
+      color: "hsl(var(--chart-5))",
+    },
   };
 
   return (
-    <Card>
+   <div className="grid grid-cols-2 gap-4">
+     <Card>
       <CardHeader>
-        <CardTitle>Yearly Study-Count</CardTitle>
+        <CardTitle>Yearly Study-Count and Impact factor</CardTitle>
         <CardDescription>Number of Publications </CardDescription>
       </CardHeader>
       <CardContent>
@@ -56,9 +63,16 @@ const YearlyStudyCount: React.FC = () => {
             <Line
               dataKey="study_count"
               type="linear"
+              stroke="var(--color-mobile)"
+              strokeWidth={2}
+              dot={true}
+            />
+             <Line
+              dataKey="impact_factor"
+              type="linear"
               stroke="var(--color-desktop)"
               strokeWidth={2}
-              dot={false}
+              dot={true}
             />
           </LineChart>
         </ChartContainer>
@@ -77,6 +91,50 @@ const YearlyStudyCount: React.FC = () => {
         </div>
       </CardFooter>
     </Card>
+    <Card>
+      <CardHeader>
+        <CardTitle>Yearly Citation</CardTitle>
+        <CardDescription>Number of Publications </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ChartContainer config={chartConfig}>
+          <LineChart data={chartData} margin={{ left: 12, right: 12 }}>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="year"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent hideLabel />}
+            />
+            <Line
+              dataKey="citation"
+              type="linear"
+              stroke="var(--color-desktop)"
+              strokeWidth={2}
+              dot={true}
+            />
+          </LineChart>
+        </ChartContainer>
+      </CardContent>
+      <CardFooter className="flex-col items-start gap-2 text-sm">
+        <div className="flex gap-2 font-medium leading-none">
+          Highlight <TrendingUp className="h-4 w-4" />
+        </div>
+        <div className="leading-none text-muted-foreground">
+          The data on African genomics research reveals a clear upward trend
+          from 2007, with a significant surge in publications starting around
+          2014. This growth reflects increasing global interest and investment
+          in the field, peaking at 14 publications in 2022. The consistent
+          activity over the years highlights the growing importance and
+          recognition of African genomics on the global research stage.
+        </div>
+      </CardFooter>
+    </Card>
+   </div>
   );
 };
 
