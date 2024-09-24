@@ -5,13 +5,13 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className=" w-full flex flex-col items-center p-2 lg:p-8">
+    <main className=" w-full flex flex-col items-center px-2 lg:p-8">
       {/* <NavBar/>
       <LandingPage/> */}
 
-      <section className="max-w-5xl flex flex-col  gap-24 mt-48 ">
-        <div className="flex flex-col  lg:flex-row justify-evenly text-center lg:text-start  gap-x-10">
-          <div className="mx-auto">
+      <section className="max-w-5xl flex flex-col  gap-24  ">
+        <div className="flex flex-col-reverse gap-y-10 bg-[#F5FDF9]  lg:flex-row justify-evenly text-center lg:text-start  lg:gap-x-10">
+          <div className="mx-auto lg:ms-0">
             <Image
               src="/dna.svg"
               alt=""
@@ -20,7 +20,7 @@ export default function Home() {
               className="w-[80vw] lg:w-[30vw] rounded-lg  object-cover object-center "
             />
           </div>
-          <div className="lg:w-[35vw] flex flex-col justify-center gap-6">
+          <div className="lg:w-[35vw] p-3 flex flex-col justify-center gap-6">
             <h2 className="text-3xl pt-6 lg:text-5xl font-semibold text-[#5A3A31] text-center">
               About us
             </h2>
@@ -36,7 +36,7 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <div className="flex flex-col-reverse lg:flex-row  justify-evenly text-center lg:text-start gap-x-10">
+        <div className="flex border-[1px] border-gray-600 bg-[#FCF7F7] p-5 rounded-lg flex-col-reverse lg:flex-row  justify-evenly text-center lg:text-start gap-x-10">
           <div className=" lg:w-[35vw] flex flex-col justify-center gap-6">
             <h2 className="text-3xl pt-6 lg:text-5xl font-semibold ">
               Our Mission
@@ -50,9 +50,9 @@ export default function Home() {
               and findings in the field of psychiatric genomics in Africa.
             </p>
           </div>
-          <div className="mx-auto">
+          <div className=" my-auto lg:ms-auto">
             <Image
-              src="/genOne.svg"
+              src="/mission.svg"
               alt=""
               width={100}
               height={100}
@@ -64,60 +64,118 @@ export default function Home() {
           <h2 className="text-3xl pt-6 lg:text-5xl font-semibold ">
             Key Features
           </h2>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="p-5 border-gray-500 border-2 rounded-md  ">
-              <h4 className="text-3xl pt-6 lg:text-2xl font-semibold text-[#5A3A31] ">
-                Unified Metadata Repository
-              </h4>
-              <p className="font-medium text-muted-foreground md:text-xl">
-                A comprehensive collection of curated psychiatric genomics
-                metadata, detailing study origin, genomic categories, and
-                psychiatric disorders studied.
-              </p>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className=" grid lg:grid-cols-3 p-5 border-gray-500 border-2 rounded-md  ">
+              <Image
+                src="/layers.svg"
+                alt=""
+                width={50}
+                height={50}
+                className="
+            
+               rounded-lg  object-cover
+                object-center my-auto mx-auto"
+              />
+              <div className="col-span-2">
+                {" "}
+                <h4 className=" pt-6 lg:text-2xl font-semibold text-[#5A3A31] ">
+                  Unified Metadata Repository
+                </h4>
+                <p className="font-medium text-muted-foreground md:text-xl">
+                  A comprehensive collection of curated psychiatric genomics
+                  metadata, detailing study origin, genomic categories, and
+                  psychiatric disorders studied.
+                </p>
+              </div>
             </div>
-            <div className="p-5 border-gray-500 border-2 rounded-md  ">
-              <h4 className="text-3xl pt-6 lg:text-2xl font-semibold text-[#5A3A31] ">
-                Exploratory Data Analytics
-              </h4>
-              <p className="font-medium text-muted-foreground md:text-xl">
-                A comprehensive collection of curated psychiatric genomics
-                metadata, detailing study origin, genomic categories, and
-                psychiatric disorders studied.
-              </p>
+            <div className="grid lg:grid-cols-3 p-5 border-gray-500 border-2 rounded-md  ">
+              <Image
+                src="/carbon_text-link-analysis.svg"
+                alt=""
+                width={50}
+                height={50}
+                className="
+            
+               rounded-lg  object-cover
+                object-center my-auto mx-auto"
+              />
+              <div className="col-span-2">
+                <h4 className=" pt-6 lg:text-2xl font-semibold text-[#5A3A31] ">
+                  Exploratory Data Analytics
+                </h4>
+                <p className="font-medium text-muted-foreground md:text-xl">
+                  A comprehensive collection of curated psychiatric genomics
+                  metadata, detailing study origin, genomic categories, and
+                  psychiatric disorders studied.
+                </p>
+              </div>
             </div>
-            <div className="p-5 border-gray-500 border-2 rounded-md  ">
-              <h4 className="text-3xl pt-6 lg:text-2xl font-semibold text-[#5A3A31] ">
-                Study Submission Platform
-              </h4>
-              <p className="font-medium text-muted-foreground md:text-xl">
-                A seamless interface for researchers to submit newly published
-                studies, with an integrated review system to ensure the quality
-                of shared data disorders studied.
-              </p>
+            <div className="grid lg:grid-cols-3 p-5 border-gray-500 border-2 rounded-md  ">
+              <Image
+                src="/Group.svg"
+                alt=""
+                width={50}
+                height={50}
+                className="
+               rounded-lg  object-cover
+                object-center my-auto mx-auto"
+              />
+              <div className="col-span-2">
+                <h4 className=" pt-6 lg:text-2xl font-semibold text-[#5A3A31] ">
+                  Study Submission Platform
+                </h4>
+                <p className="font-medium text-muted-foreground md:text-xl">
+                  A seamless interface for researchers to submit newly published
+                  studies, with an integrated review system to ensure the
+                  quality of shared data disorders studied.
+                </p>
+              </div>
             </div>
-            <div className="p-5 border-gray-500 border-2 rounded-md  ">
-              <h4 className="text-3xl pt-6 lg:text-2xl font-semibold text-[#5A3A31] ">
-                Advanced Search and Filter
-              </h4>
-              <p className="font-medium text-muted-foreground md:text-xl">
-                A Powerful search and filter functionality based on region,
-                disorder, and genomic category to provide users with relevant
-                and detailed study information.
-              </p>
+            <div className="grid lg:grid-cols-3 p-5 border-gray-500 border-2 rounded-md  ">
+            <Image
+                src="/mdi_magnify.svg"
+                alt=""
+                width={50}
+                height={50}
+                className="
+               rounded-lg  object-cover
+                object-center my-auto mx-auto"
+              />
+              <div className="col-span-2">
+                <h4 className=" pt-6 lg:text-2xl font-semibold text-[#5A3A31] ">
+                  Advanced Search and Filter
+                </h4>
+                <p className="font-medium text-muted-foreground md:text-xl">
+                  A Powerful search and filter functionality based on region,
+                  disorder, and genomic category to provide users with relevant
+                  and detailed study information.
+                </p>
+              </div>
             </div>
-            <div className="p-5 border-gray-500 border-2 rounded-md  ">
-              <h4 className="text-3xl pt-6 lg:text-2xl font-semibold text-[#5A3A31] ">
+            <div className="grid lg:grid-cols-3 p-5 border-gray-500 border-2 rounded-md  ">
+            <Image
+                src="/Vector.svg"
+                alt=""
+                width={50}
+                height={50}
+                className="
+               rounded-lg  object-cover
+                object-center my-auto mx-auto"
+              />
+              <div className="col-span-2">
+              <h4 className=" pt-6 lg:text-2xl font-semibold text-[#5A3A31] ">
                 Events and News Hub
               </h4>
               <p className="font-medium text-muted-foreground md:text-xl">
                 A platform for the latest news, events, preprints, and
                 publications related to psychiatric genomics research in Africa.
               </p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-row gap-x-20">
+        <div className="flex flex-col lg:flex-row gap-x-20">
           <Image
             src="/genOne.svg"
             alt=""
@@ -131,7 +189,7 @@ export default function Home() {
               Our objectives
             </h1>
             <h5>Our objectives are to:</h5>
-            <ul className="space-y-3 text-xl font-bold">
+            <ul className="space-y-3 text-xl font-bold list-disc">
               <li>
                 Provide open and equitable access to African psychiatric
                 genomics metadata.
@@ -150,21 +208,21 @@ export default function Home() {
             </ul>
           </div>
         </div>
-        <div className="grid grid-cols-2">
+        <div className=" lg:border-[1px] border-gray-600 rounded-lg grid gap-y-10 lg:grid-cols-2">
           <div className="flex flex-col space-y-5">
-            <h1 className="text-3xl pt-6 lg:text-5xl font-semibold">
+            <h1 className="text-3xl text-center pt-6 lg:text-5xl font-semibold">
               Our vision
             </h1>
             <Image
-              src="/dna.svg"
+              src="/oneAbout.svg"
               alt=""
               width={100}
               height={100}
-              className="w-[80vw] lg:w-[20vw] rounded-lg  object-cover object-center "
+              className="w-[80vw] lg:w-[30vw] rounded-lg  object-cover object-center "
             ></Image>
           </div>
-          <div className="  text-2xl mt-auto items-center ">
-            <p className="">
+          <div className="  text-base my-auto items-center ">
+            <p className="font-bold">
               Through PsychGenAfrica, we envision a future where African
               psychiatric genomics research is fully integrated into the global
               research landscape, fostering collaboration and enhancing the

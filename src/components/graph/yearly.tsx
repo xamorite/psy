@@ -40,7 +40,7 @@ const YearlyStudyCount: React.FC = () => {
   };
 
   return (
-   <div className="grid grid-cols-2 gap-4">
+   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
      <Card>
       <CardHeader>
         <CardTitle>Yearly Study-Count and Impact factor</CardTitle>
