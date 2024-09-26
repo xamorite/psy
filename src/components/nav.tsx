@@ -37,12 +37,12 @@ const NavBar = () => {
           >
             Analysis
           </Link>
-          {/* <Link
+          <Link
             href="/About"
             className="transition-colors hover:text-primary font-medium"
           >
             About
-          </Link> */}
+          </Link>
         </div>
       </div>
 

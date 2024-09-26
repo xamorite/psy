@@ -15,7 +15,7 @@ export default function Home() {
         {/* <Button  className="text-2xl p-7">Browse for free</Button> */}
         <Link className={buttonVariants(
           {size:'lg', className:""}
-        )} href="/About">Brouse for free</Link>
+        )} href="/About">Browse for free</Link>
       </div>
       <section className="max-w-5xl flex flex-col  gap-24 mt-48 ">
         <div className="flex flex-col  lg:flex-row justify-evenly text-center lg:text-start  gap-x-10">

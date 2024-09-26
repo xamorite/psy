@@ -60,6 +60,30 @@ export default function Home() {
             />
           </div>
         </div>
+        <div className=" lg:border-[1px] border-gray-600 rounded-lg grid gap-y-10 lg:grid-cols-2">
+          <div className="flex flex-col space-y-5">
+            <h1 className="text-3xl text-center pt-6 lg:text-5xl font-semibold">
+              Our vision
+            </h1>
+            <Image
+              src="/oneAbout.svg"
+              alt=""
+              width={100}
+              height={100}
+              className="w-[80vw] lg:w-[30vw] rounded-lg  object-cover object-center "
+            ></Image>
+          </div>
+          <div className="  text-base my-auto items-center ">
+            <p className="font-bold">
+              Through PsychGenAfrica, we envision a future where African
+              psychiatric genomics research is fully integrated into the global
+              research landscape, fostering collaboration and enhancing the
+              quality and impact of studies on neuropsychiatric disorders. The
+              portal aims to bridge gaps in data access and support equitable
+              advancements in psychiatric research across the continent.
+            </p>
+          </div>
+        </div>
         <div className="flex flex-col justify-evenly   gap-y-10">
           <h2 className="text-3xl pt-6 lg:text-5xl font-semibold ">
             Key Features
@@ -184,7 +208,6 @@ export default function Home() {
             className="w-[80vw] lg:w-[30vw] rounded-lg  object-cover object-center "
           />
           <div className="space-y-4">
-            {" "}
             <h1 className="text-3xl pt-6 lg:text-5xl font-semibold ">
               Our objectives
             </h1>
@@ -208,30 +231,7 @@ export default function Home() {
             </ul>
           </div>
         </div>
-        <div className=" lg:border-[1px] border-gray-600 rounded-lg grid gap-y-10 lg:grid-cols-2">
-          <div className="flex flex-col space-y-5">
-            <h1 className="text-3xl text-center pt-6 lg:text-5xl font-semibold">
-              Our vision
-            </h1>
-            <Image
-              src="/oneAbout.svg"
-              alt=""
-              width={100}
-              height={100}
-              className="w-[80vw] lg:w-[30vw] rounded-lg  object-cover object-center "
-            ></Image>
-          </div>
-          <div className="  text-base my-auto items-center ">
-            <p className="font-bold">
-              Through PsychGenAfrica, we envision a future where African
-              psychiatric genomics research is fully integrated into the global
-              research landscape, fostering collaboration and enhancing the
-              quality and impact of studies on neuropsychiatric disorders. The
-              portal aims to bridge gaps in data access and support equitable
-              advancements in psychiatric research across the continent.
-            </p>
-          </div>
-        </div>
+        
       </section>
       <div className="max-w-4xl text-center my-32 space-y-10 ">
         <h2 className="text-2xl font-semibold">Technology and Development</h2>
