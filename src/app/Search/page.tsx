@@ -180,7 +180,7 @@ const SearchPage = () => {
 
         <AdvancedSearch setFilter={setFilter} />
 
-        {isSuggestionVisible && suggestion?.disorders?.length > 0 ? (
+        {isSuggestionVisible && suggestion?.disorders?.at(1) ? (
           <ul
             ref={suggestionRef}
             className="w-3/5 lg:max-w-2xl bg-muted flex flex-col justify-center absolute top-[72px] lg:top-24 z-40 mx-auto space-y-2 py-4 rounded-lg"
