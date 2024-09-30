@@ -5,6 +5,7 @@ import RegionalStudyCount from "@/components/graph/region";
 import DisorderStudyCount from "@/components/graph/disorder";
 import BiologicalStudyCount from "@/components/graph/biological";
 import GeneticsStudyCount from "@/components/graph/genetics";
+import Chord from "@/components/graph/collaboration";
 
 const Analysis = () => {
   return (
@@ -19,13 +20,17 @@ const Analysis = () => {
       </div>
       <div className="p-10 w-full space-y-6 ">
         <h1 className="text-2xl lg:text-3xl font-bold ">Visualize by:</h1>
-        <Tabs defaultValue="account" className="lg:w-[55vw] mx-auto space-y-10">
+        <Tabs
+          defaultValue="collaboration"
+          className="lg:w-[70vw] mx-auto space-y-10"
+        >
           <div className="p-1 border-none lg:border-y-[1px] lg:border-x-[1px]">
             <TabsList className="flex">
-              <TabsTrigger value="year" >Year</TabsTrigger>
-              <TabsTrigger value="region" >Region</TabsTrigger>
-              <TabsTrigger value="disorder" >Disorder</TabsTrigger>
-              <TabsTrigger value="biologicalModality" >
+              <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
+              <TabsTrigger value="year">Year</TabsTrigger>
+              <TabsTrigger value="region">Region</TabsTrigger>
+              <TabsTrigger value="disorder">Disorder</TabsTrigger>
+              <TabsTrigger value="biologicalModality">
                 Biological Mod..
               </TabsTrigger>
               <TabsTrigger value="geneticSource">Genetic Source</TabsTrigger>
@@ -45,6 +50,9 @@ const Analysis = () => {
           </TabsContent>
           <TabsContent value="geneticSource">
             <GeneticsStudyCount />
+          </TabsContent>
+          <TabsContent value="collaboration">
+            <Chord />
           </TabsContent>
         </Tabs>
       </div>

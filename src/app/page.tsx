@@ -12,7 +12,10 @@ export default function Home() {
         <h1 className="text-5xl lg:text-6xl font-bold ">
           Explore African Genomics – Your Gateway to Psychiatric Research
         </h1>
-        <Button className="text-2xl p-7">Browse for free</Button>
+        {/* <Button  className="text-2xl p-7">Browse for free</Button> */}
+        <Link className={buttonVariants(
+          {size:'lg', className:""}
+        )} href="/About">Browse for free</Link>
       </div>
       <section className="max-w-5xl flex flex-col  gap-24 mt-48 ">
         <div className="flex flex-col  lg:flex-row justify-evenly text-center lg:text-start  gap-x-10">
@@ -47,9 +50,9 @@ export default function Home() {
               psychiatric genomics, organized for your convenience.
             </p>
             <SearchPublication />
-            <Link href="#" className={buttonVariants()}>
-              Use Advanced Search
-            </Link>
+            <Link className={buttonVariants(
+          {size:'lg', className:""}
+        )} href="/Search">Use Advanced search</Link>
           </div>
           <div className="mx-auto">
             <Image
@@ -79,9 +82,9 @@ export default function Home() {
               Uncover a comprehensive overview of existing studies in African
               psychiatric genomics, organized for your convenience.
             </p>
-            <Button className="w-fit px-16 py-7 text-lg self-center lg:self-start">
-              Learn More
-            </Button>
+            <Link className={buttonVariants(
+          {size:'lg', className:""}
+        )} href="/Analysis">Learn more</Link>
           </div>
         </div>
       </section>

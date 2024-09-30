@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import MobileNav from "./MobileNav";
+import Image from "next/image";
 
 
 const NavBar = () => {
@@ -9,10 +10,17 @@ const NavBar = () => {
     <nav className="sticky top-0 z-40 flex items-center mx-auto w-full px-2.5 md:px-6 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className=" flex justify-center items-center h-14">
 
-        <Link href="/" className="flex items-center space-x-2 mr-4">
-          <div className="text-primary text-lg font-bold ">
+        <Link href="/" className="flex items-center space-x-2 ">
+          {/* <div className="text-primary text-lg font-bold ">
             Psychgen_Portal
-          </div>
+          </div> */}
+          <Image
+              src="/logo.png"
+              alt=""
+              width={100}
+              height={100}
+              className="w-16 h-16 rounded-lg  object-cover object-center "
+            />
         </Link>
 
         <div className="hidden lg:flex items-center gap-6 pl-6">
@@ -28,6 +36,12 @@ const NavBar = () => {
             className="transition-colors hover:text-primary font-medium"
           >
             Analysis
+          </Link>
+          <Link
+            href="/About"
+            className="transition-colors hover:text-primary font-medium"
+          >
+            About
           </Link>
         </div>
       </div>
