@@ -9,7 +9,7 @@ import {
   Filter,
   Search,
 } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useGetSearchResult } from "@/hooks/use-get-searchResults";
 import { Input } from "@/components/ui/input";
 import useDebounce from "@/hooks/useDebounce";
@@ -25,6 +25,7 @@ import PaginationControls from "@/components/PaginationControls";
 import AdvancedSearch from "@/components/AdvancedSearch";
 import { useGetSuggestion } from "@/hooks/use-get-suggestion";
 import Link from "next/link";
+import { useOnClickOutside } from "@/hooks/use-on-click-outside";
 
 
 const REGIONS = {
@@ -101,6 +102,7 @@ const YEAR = {
 
 const SearchPage = () => {
   const [page, setPage] = useState<number>(1);
+  // const [activeIndex, setActiveIndex] = useState<null | number>(null)
   const [filter, setFilter] = useState<DocumentState>({
     searchTerm: "",
     region: "",
@@ -109,6 +111,17 @@ const SearchPage = () => {
     year: ""
   });
 
+
+
+  const debouncedSearchTerm = useDebounce(filter.searchTerm, 400);
+
+  const { data: searches, isLoading, isError } = useGetSearchResult(debouncedSearchTerm, page, filter);
+  const { data: suggestion } = useGetSuggestion(filter.searchTerm)
+
+  console.log('suggestion', suggestion);
+
+  const nextPage = () => setPage((prevPage) => prevPage + 1);
+  const prevPage = () => setPage((prevPage) => Math.max(prevPage - 1, 1));
 
   const applyStringFilter = ({
     category,
@@ -133,17 +146,19 @@ const SearchPage = () => {
     });
   };
 
+  // State to handle the visibility of the suggestion list
+  const [isSuggestionVisible, setIsSuggestionVisible] = useState(true);
 
+  // Ref for the suggestion list
+  const suggestionRef = useRef<HTMLUListElement | null>(null);
 
-  const debouncedSearchTerm = useDebounce(filter.searchTerm, 400);
+  // Close suggestion list when clicking outside of it
+  useOnClickOutside(suggestionRef, () => setIsSuggestionVisible(false));
 
-  const { data: searches, isLoading, isError } = useGetSearchResult(debouncedSearchTerm, page, filter);
-  const { data: suggestion } = useGetSuggestion(filter.searchTerm)
-
-  console.log('suggestion', suggestion);
-
-  const nextPage = () => setPage((prevPage) => prevPage + 1);
-  const prevPage = () => setPage((prevPage) => Math.max(prevPage - 1, 1));
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter({ ...filter, searchTerm: e.target.value });
+    setIsSuggestionVisible(true); // Show the suggestion list when input changes
+  };
 
 
   return (
@@ -156,27 +171,29 @@ const SearchPage = () => {
           />
           <Input
             value={filter.searchTerm}
-            onChange={(e) => setFilter({ ...filter, searchTerm: e.target.value })}
+            onChange={handleInputChange}
             className='border-0 dark:text-white dark:placeholder:text-white'
             placeholder='Search for disorders'
-            autoComplete="off" 
+            autoComplete="off"
           />
         </div>
+
         <AdvancedSearch setFilter={setFilter} />
-        <ul className='w-3/5 lg:max-w-2xl bg-muted flex flex-col justify-center absolute top-[72px] lg:top-24 z-40 mx-auto space-y-2 rounded-lg'>
-          {
-            suggestion?.disorders?.map(disorder => (
-              <li key={disorder.id} className='p-2 hover:bg-gray-200'>
-                <Link
-                  href={`/Search/${disorder.id}`}
-                  className='font-medium tracking-tight text-balance'
-                >
+
+        {isSuggestionVisible && suggestion?.disorders?.length > 0 ? (
+          <ul
+            ref={suggestionRef}
+            className="w-3/5 lg:max-w-2xl bg-muted flex flex-col justify-center absolute top-[72px] lg:top-24 z-40 mx-auto space-y-2 py-4 rounded-lg"
+          >
+            {suggestion?.disorders?.map((disorder) => (
+              <li key={disorder.id} className="p-2 hover:bg-gray-200">
+                <Link href={`/Search/${disorder.id}`} className="font-medium tracking-tight text-balance">
                   {disorder.disorder_name}
                 </Link>
               </li>
-            ))
-          }
-        </ul>
+            ))}
+          </ul>
+        ) : null}
       </div>
 
       <div className='flex gap-6 mx-4 lg:mx-10 mt-20'>
