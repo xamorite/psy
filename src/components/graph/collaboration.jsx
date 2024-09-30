@@ -41,7 +41,7 @@ const Chord = () => {
     fetch('https://algorithmxcomp.pythonanywhere.com/api/country-collaboration/')
       .then(response => response.json())
       .then(data => {
-        
+        d3.select('#chart').selectAll("*").remove(); 
         let matrix = data.matrix;
         let countries = data.countries;
 
