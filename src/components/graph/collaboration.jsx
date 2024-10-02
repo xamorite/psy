@@ -80,16 +80,18 @@ const Chord = () => {
           })
         );
 
-        const width = 700;
-        const height = 700;
+        const svgContainer = d3.select("#svgContainer");
+        const containerWidth = svgContainer.node().getBoundingClientRect().width;
+        const containerHeight = svgContainer.node().getBoundingClientRect().height;
+        const width = Math.min(containerWidth, containerHeight); // Adjust size based on container
+        const height = width;
         const outerRadius = Math.min(width, height) / 2 - 100;
         const innerRadius = outerRadius - 20;
 
-        const svg = d3
-          .select("#svgContainer")
+        const svg = svgContainer
           .append("svg")
-          .attr("width", width)
-          .attr("height", height)
+          .attr("viewBox", `0 0 ${width} ${height}`) // Responsive
+          .attr("preserveAspectRatio", "xMidYMid meet")
           .append("g")
           .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
@@ -115,14 +117,11 @@ const Chord = () => {
             d.angle = (d.startAngle + d.endAngle) / 2;
           })
           .attr("dy", ".35em")
-          .attr(
-            "transform",
-            (d) => `
-            rotate(${(d.angle * 180) / Math.PI - 90})
-            translate(${outerRadius + 5})
-            ${d.angle > Math.PI ? "rotate(180)" : ""}
-          `
-          )
+          .attr("transform", (d) => {
+            return `rotate(${(d.angle * 180) / Math.PI - 90}) translate(${outerRadius + 10}) ${
+              d.angle > Math.PI ? "rotate(180)" : ""
+            }`;
+          })
           .style("text-anchor", (d) => (d.angle > Math.PI ? "end" : null))
           .text((d) => countries[d.index])
           .style("font-size", "10px")
@@ -136,17 +135,34 @@ const Chord = () => {
           .append("path")
           .attr("d", ribbon)
           .style("fill", (d) => regionColors(countryToRegion[countries[d.target.index]]))
-          .style("stroke", (d) => d3.rgb(regionColors(countryToRegion[countries[d.target.index]])).darker())
+          .style("stroke", (d) =>
+            d3.rgb(regionColors(countryToRegion[countries[d.target.index]])).darker()
+          )
           .style("stroke-width", 0.1)
           .style("opacity", 0.6);
 
-        const legendSvg = d3.select("#legendContainer").append("svg").attr("width", 200).attr("height", Object.keys(regions).length * 20);
+        // Responsive legend
+        const legendSvg = d3
+          .select("#legendContainer")
+          .append("svg")
+          .attr("width", "100%") // Set to 100% width
+          .attr("height", Object.keys(regions).length * 20);
 
-        const legend = legendSvg.selectAll("g").data(Object.keys(regions)).enter().append("g").attr("transform", (d, i) => `translate(0, ${i * 20})`);
+        const legend = legendSvg
+          .selectAll("g")
+          .data(Object.keys(regions))
+          .enter()
+          .append("g")
+          .attr("transform", (d, i) => `translate(0, ${i * 20})`);
 
         legend.append("rect").attr("x", 0).attr("y", 0).attr("width", 15).attr("height", 15).style("fill", (d) => regionColors(d));
 
-        legend.append("text").attr("x", 20).attr("y", 12).text((d) => d).style("font-size", "12px");
+        legend
+          .append("text")
+          .attr("x", 20)
+          .attr("y", 12)
+          .text((d) => d)
+          .style("font-size", "12px");
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -154,9 +170,9 @@ const Chord = () => {
   }, []);
 
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: "50vh" }}>
-      <div id="legendContainer" style={{ padding: "20px" }}></div>
-      <div id="svgContainer" style={{ flexGrow: 1 }}></div>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", height: "100vh" }}>
+      <div id="legendContainer" style={{ width: "80%", marginBottom: "20px" }}></div>
+      <div id="svgContainer" style={{ width: "80%", flexGrow: 1 }}></div>
     </div>
   );
 };
