@@ -27,10 +27,10 @@ const Detail = async ({ params }: pageProps) => {
   const detail: Details = await getDetails(studyId);
 
   // console.log(detail);
-  const limitedAuthors = detail?.authors_affiliations.authors?.slice(0, 3);
+  const limitedAuthors = detail?.authors_affiliations?.authors?.slice(0, 3);
 
   const limitedAffiliationNumbers = new Set<string>();
-  limitedAuthors.forEach((author) => {
+  limitedAuthors?.forEach((author) => {
     author.affiliation_numbers.forEach((number) => {
       limitedAffiliationNumbers.add(number);
     });
@@ -153,7 +153,7 @@ const Detail = async ({ params }: pageProps) => {
             {limitedAuthors?.map((author, index) => (
               <div key={index}>
 
-                {author.affiliation_numbers
+                {author?.affiliation_numbers
                   .map((affiliationNumber, index) => (
                     <sup className='font-medium text-lg' key={affiliationNumber}>
                       {affiliationNumber}
