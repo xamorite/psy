@@ -3,231 +3,27 @@ import * as d3 from "d3";
 
 const Chord = () => {
   useEffect(() => {
-    // console.log("Chord component is rendering");
-    // Clear the svg container before rendering to prevent multiple renders
+    // Clear previous SVG elements
     d3.select("#svgContainer").selectAll("*").remove();
     d3.select("#legendContainer").selectAll("*").remove();
 
     const regions = {
-      "NORTH AMERICA": [
-        "UNITED STATES",
-        "CANADA",
-        "MEXICO",
-        "GREENLAND",
-        "CUBA",
-        "HAITI",
-        "DOMINICAN REPUBLIC",
-        "JAMAICA",
-        "PUERTO RICO",
-      ],
-      "SOUTH AMERICA": [
-        "BRAZIL",
-        "ARGENTINA",
-        "CHILE",
-        "PERU",
-        "COLOMBIA",
-        "VENEZUELA",
-        "ECUADOR",
-        "BOLIVIA",
-        "PARAGUAY",
-        "URUGUAY",
-        "GUYANA",
-        "SURINAME",
-      ],
-      EUROPE: [
-        "UNITED KINGDOM",
-        "GERMANY",
-        "FRANCE",
-        "ITALY",
-        "SPAIN",
-        "SWEDEN",
-        "NETHERLANDS",
-        "BELGIUM",
-        "NORWAY",
-        "DENMARK",
-        "FINLAND",
-        "IRELAND",
-        "PORTUGAL",
-        "POLAND",
-        "AUSTRIA",
-        "SWITZERLAND",
-        "CZECH REPUBLIC",
-        "HUNGARY",
-        "GREECE",
-        "ICELAND",
-        "LUXEMBOURG",
-        "MONACO",
-        "SLOVAKIA",
-        "SLOVENIA",
-        "BOSNIA AND HERZEGOVINA",
-        "CROATIA",
-        "SERBIA",
-        "MONTENEGRO",
-        "NORTH MACEDONIA",
-        "BULGARIA",
-        "ROMANIA",
-        "ALBANIA",
-        "ESTONIA",
-        "LATVIA",
-        "LITHUANIA",
-        "BELARUS",
-        "RUSSIA",
-        "UKRAINE",
-        "MOLDOVA",
-        "KOSOVO",
-        "MALTA",
-        "CYPRUS",
-      ],
-      ASIA: [
-        "CHINA",
-        "JAPAN",
-        "INDIA",
-        "SAUDI ARABIA",
-        "SOUTH KOREA",
-        "NORTH KOREA",
-        "VIETNAM",
-        "THAILAND",
-        "PHILIPPINES",
-        "INDONESIA",
-        "MALAYSIA",
-        "SINGAPORE",
-        "MYANMAR",
-        "LAOS",
-        "CAMBODIA",
-        "NEPAL",
-        "BHUTAN",
-        "BANGLADESH",
-        "SRI LANKA",
-        "MALDIVES",
-        "PAKISTAN",
-        "AFGHANISTAN",
-        "IRAN",
-        "IRAQ",
-        "SYRIA",
-        "LEBANON",
-        "ISRAEL",
-        "JORDAN",
-        "YEMEN",
-        "OMAN",
-        "UNITED ARAB EMIRATES",
-        "KUWAIT",
-        "QATAR",
-        "BAHRAIN",
-        "TAIWAN",
-        "MONGOLIA",
-        "KAZAKHSTAN",
-        "UZBEKISTAN",
-        "TURKMENISTAN",
-        "KYRGYZSTAN",
-        "TAJIKISTAN",
-        "ARMENIA",
-        "AZERBAIJAN",
-        "GEORGIA",
-      ],
-      OCEANIA: [
-        "AUSTRALIA",
-        "NEW ZEALAND",
-        "FIJI",
-        "PAPUA NEW GUINEA",
-        "SOLOMON ISLANDS",
-        "VANUATU",
-        "SAMOA",
-        "TONGA",
-        "KIRIBATI",
-        "TUVALU",
-        "NAURU",
-        "PALAU",
-        "MARSHALL ISLANDS",
-        "MICRONESIA",
-      ],
-      "NORTHERN AFRICA": [
-        "MOROCCO",
-        "EGYPT",
-        "TUNISIA",
-        "ALGERIA",
-        "LIBYA",
-        "SUDAN",
-      ],
-      "EASTERN AFRICA": [
-        "KENYA",
-        "UGANDA",
-        "RWANDA",
-        "SEYCHELLES",
-        "TANZANIA",
-        "SOMALIA",
-        "ETHIOPIA",
-        "ERITREA",
-        "DJIBOUTI",
-        "MADAGASCAR",
-        "MAURITIUS",
-        "COMOROS",
-      ],
-      "MIDDLE AFRICA": [
-        "CENTRAL AFRICAN REPUBLIC",
-        "DEMOCRATIC REPUBLIC OF THE CONGO",
-        "GABON",
-        "CONGO",
-        "CHAD",
-        "EQUATORIAL GUINEA",
-        "SÃO TOMÉ AND PRÍNCIPE",
-        "ANGOLA",
-      ],
-      "WESTERN AFRICA": [
-        "GHANA",
-        "NIGERIA",
-        "SENEGAL",
-        "MALI",
-        "BENIN",
-        "TOGO",
-        "NIGER",
-        "BURKINA FASO",
-        "GUINEA",
-        "SIERRA LEONE",
-        "LIBERIA",
-        "IVORY COAST",
-        "CAPE VERDE",
-        "GAMBIA",
-        "GUINEA-BISSAU",
-        "MAURITANIA",
-      ],
-      "SOUTHERN AFRICA": [
-        "SOUTH AFRICA",
-        "NAMIBIA",
-        "BOTSWANA",
-        "ZIMBABWE",
-        "ZAMBIA",
-        "MALAWI",
-        "MOZAMBIQUE",
-        "LESOTHO",
-        "ESWATINI",
-      ],
+      "NORTH AMERICA": ["UNITED STATES", "CANADA", "MEXICO", "GREENLAND", "CUBA", "HAITI", "DOMINICAN REPUBLIC", "JAMAICA", "PUERTO RICO"],
+      "SOUTH AMERICA": ["BRAZIL", "ARGENTINA", "CHILE", "PERU", "COLOMBIA", "VENEZUELA", "ECUADOR", "BOLIVIA", "PARAGUAY", "URUGUAY", "GUYANA", "SURINAME"],
+      EUROPE: ["UNITED KINGDOM", "GERMANY", "FRANCE", "ITALY", "SPAIN", "SWEDEN", "NETHERLANDS", "BELGIUM", "NORWAY", "DENMARK", "FINLAND", "IRELAND", "PORTUGAL", "POLAND", "AUSTRIA", "SWITZERLAND", "CZECH REPUBLIC", "HUNGARY", "GREECE", "ICELAND", "LUXEMBOURG", "MONACO", "SLOVAKIA", "SLOVENIA", "BOSNIA AND HERZEGOVINA", "CROATIA", "SERBIA", "MONTENEGRO", "NORTH MACEDONIA", "BULGARIA", "ROMANIA", "ALBANIA", "ESTONIA", "LATVIA", "LITHUANIA", "BELARUS", "RUSSIA", "UKRAINE", "MOLDOVA", "KOSOVO", "MALTA", "CYPRUS"],
+      ASIA: ["CHINA", "JAPAN", "INDIA", "SAUDI ARABIA", "SOUTH KOREA", "NORTH KOREA", "VIETNAM", "THAILAND", "PHILIPPINES", "INDONESIA", "MALAYSIA", "SINGAPORE", "MYANMAR", "LAOS", "CAMBODIA", "NEPAL", "BHUTAN", "BANGLADESH", "SRI LANKA", "MALDIVES", "PAKISTAN", "AFGHANISTAN", "IRAN", "IRAQ", "SYRIA", "LEBANON", "ISRAEL", "JORDAN", "YEMEN", "OMAN", "UNITED ARAB EMIRATES", "KUWAIT", "QATAR", "BAHRAIN", "TAIWAN", "MONGOLIA", "KAZAKHSTAN", "UZBEKISTAN", "TURKMENISTAN", "KYRGYZSTAN", "TAJIKISTAN", "ARMENIA", "AZERBAIJAN", "GEORGIA"],
+      OCEANIA: ["AUSTRALIA", "NEW ZEALAND", "FIJI", "PAPUA NEW GUINEA", "SOLOMON ISLANDS", "VANUATU", "SAMOA", "TONGA", "KIRIBATI", "TUVALU", "NAURU", "PALAU", "MARSHALL ISLANDS", "MICRONESIA"],
+      "NORTHERN AFRICA": ["MOROCCO", "EGYPT", "TUNISIA", "ALGERIA", "LIBYA", "SUDAN"],
+      "EASTERN AFRICA": ["KENYA", "UGANDA", "RWANDA", "SEYCHELLES", "TANZANIA", "SOMALIA", "ETHIOPIA", "ERITREA", "DJIBOUTI", "MADAGASCAR", "MAURITIUS", "COMOROS"],
+      "MIDDLE AFRICA": ["CENTRAL AFRICAN REPUBLIC", "DEMOCRATIC REPUBLIC OF THE CONGO", "GABON", "CONGO", "CHAD", "EQUATORIAL GUINEA", "SÃO TOMÉ AND PRÍNCIPE", "ANGOLA"],
+      "WESTERN AFRICA": ["GHANA", "NIGERIA", "SENEGAL", "MALI", "BENIN", "TOGO", "NIGER", "BURKINA FASO", "GUINEA", "SIERRA LEONE", "LIBERIA", "IVORY COAST", "CAPE VERDE", "GAMBIA", "GUINEA-BISSAU", "MAURITANIA"],
+      "SOUTHERN AFRICA": ["SOUTH AFRICA", "NAMIBIA", "BOTSWANA", "ZIMBABWE", "ZAMBIA", "MALAWI", "MOZAMBIQUE", "LESOTHO", "ESWATINI"],
     };
 
-    const africanRegions = [
-      "NORTHERN AFRICA",
-      "EASTERN AFRICA",
-      "MIDDLE AFRICA",
-      "WESTERN AFRICA",
-      "SOUTHERN AFRICA",
-    ];
+    const africanRegions = ["NORTHERN AFRICA", "EASTERN AFRICA", "MIDDLE AFRICA", "WESTERN AFRICA", "SOUTHERN AFRICA"];
+    const customColors = ["#17becf", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#9467bd", "#ff7f0e", "#1f77b4", "#d62728", "#2ca02c"];
 
-    const customColors = [
-      "#17becf",
-      "#8c564b",
-      "#e377c2",
-      "#7f7f7f",
-      "#bcbd22",
-      "#9467bd",
-      "#ff7f0e",
-      "#1f77b4",
-      "#d62728",
-      "#2ca02c",
-    ];
-
-    const regionColors = d3
-      .scaleOrdinal()
-      .domain(Object.keys(regions))
-      .range(customColors);
+    const regionColors = d3.scaleOrdinal().domain(Object.keys(regions)).range(customColors);
 
     const countryToRegion = {};
     Object.entries(regions).forEach(([region, countries]) => {
@@ -236,9 +32,7 @@ const Chord = () => {
       });
     });
 
-    fetch(
-      "https://algorithmxcomp.pythonanywhere.com/api/country-collaboration/"
-    )
+    fetch("https://algorithmxcomp.pythonanywhere.com/api/country-collaboration/")
       .then((response) => response.json())
       .then((data) => {
         d3.select("#chart").selectAll("*").remove();
@@ -246,8 +40,7 @@ const Chord = () => {
         let countries = data.countries;
 
         if (!matrix.length) {
-          document.getElementById("chart").innerHTML =
-            "<p>No data available</p>";
+          document.getElementById("chart").innerHTML = "<p>No data available</p>";
           return;
         }
 
@@ -263,9 +56,7 @@ const Chord = () => {
         const sortedMatrix = sortedCountries.map((_, i) =>
           sortedCountries.map(
             (_, j) =>
-              matrix[countries.indexOf(sortedCountries[i])][
-                countries.indexOf(sortedCountries[j])
-              ]
+              matrix[countries.indexOf(sortedCountries[i])][countries.indexOf(sortedCountries[j])]
           )
         );
 
@@ -274,27 +65,16 @@ const Chord = () => {
 
         const africaMatrix = matrix.map((row, i) =>
           row.map((value, j) => {
-            const isAfricaI = africanRegions.includes(
-              countryToRegion[countries[i]]
-            );
-            const isAfricaJ = africanRegions.includes(
-              countryToRegion[countries[j]]
-            );
-            return isAfricaI && isAfricaJ
-              ? value
-              : isAfricaI || isAfricaJ
-              ? value
-              : 0;
+            const isAfricaI = africanRegions.includes(countryToRegion[countries[i]]);
+            const isAfricaJ = africanRegions.includes(countryToRegion[countries[j]]);
+            return isAfricaI && isAfricaJ ? value : isAfricaI || isAfricaJ ? value : 0;
           })
         );
 
         const reversedAfricaMatrix = africaMatrix.map((row, i) =>
           row.map((value, j) => {
-            const isAfricaI = africanRegions.includes(
-              countryToRegion[countries[i]]
-            );
-            return isAfricaI &&
-              !africanRegions.includes(countryToRegion[countries[j]])
+            const isAfricaI = africanRegions.includes(countryToRegion[countries[i]]);
+            return isAfricaI && !africanRegions.includes(countryToRegion[countries[j]])
               ? africaMatrix[j][i]
               : value;
           })
@@ -302,8 +82,8 @@ const Chord = () => {
 
         const width = 700;
         const height = 700;
-        const outerRadius = Math.min(width, height) / 2 - 200;
-        const innerRadius = outerRadius - 1.5;
+        const outerRadius = Math.min(width, height) / 2 - 100;
+        const innerRadius = outerRadius - 20;
 
         const svg = d3
           .select("#svgContainer")
@@ -319,23 +99,14 @@ const Chord = () => {
 
         const arc = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius);
 
-        const ribbon = d3.ribbon().radius(innerRadius - 5);
+        const ribbon = d3.ribbon().radius(innerRadius);
 
-        const group = svg
-          .append("g")
-          .selectAll("g")
-          .data(chords.groups)
-          .enter()
-          .append("g");
+        const group = svg.append("g").selectAll("g").data(chords.groups).enter().append("g");
 
         group
           .append("path")
-          .style("fill", (d) =>
-            regionColors(countryToRegion[countries[d.index]])
-          )
-          .style("stroke", (d) =>
-            d3.rgb(regionColors(countryToRegion[countries[d.index]])).darker()
-          )
+          .style("fill", (d) => regionColors(countryToRegion[countries[d.index]]))
+          .style("stroke", (d) => d3.rgb(regionColors(countryToRegion[countries[d.index]])).darker())
           .attr("d", arc);
 
         group
@@ -364,61 +135,28 @@ const Chord = () => {
           .enter()
           .append("path")
           .attr("d", ribbon)
-          .style("fill", (d) =>
-            regionColors(countryToRegion[countries[d.target.index]])
-          )
-          .style("stroke", (d) =>
-            d3
-              .rgb(regionColors(countryToRegion[countries[d.target.index]]))
-              .darker()
-          )
+          .style("fill", (d) => regionColors(countryToRegion[countries[d.target.index]]))
+          .style("stroke", (d) => d3.rgb(regionColors(countryToRegion[countries[d.target.index]])).darker())
           .style("stroke-width", 0.1)
           .style("opacity", 0.6);
 
-        // Fix for the Legend
-        const legendSvg = d3
-          .select("#legendContainer")
-          .append("svg")
-          .attr("width", 200)
-          .attr("height", Object.keys(regions).length * 20); // Set the height based on number of regions
+        const legendSvg = d3.select("#legendContainer").append("svg").attr("width", 200).attr("height", Object.keys(regions).length * 20);
 
-        const legend = legendSvg
-          .selectAll("g")
-          .data(Object.keys(regions))
-          .enter()
-          .append("g")
-          .attr("transform", (d, i) => `translate(0, ${i * 20})`);
+        const legend = legendSvg.selectAll("g").data(Object.keys(regions)).enter().append("g").attr("transform", (d, i) => `translate(0, ${i * 20})`);
 
-        legend
-          .append("rect")
-          .attr("x", 0)
-          .attr("y", 0)
-          .attr("width", 15) // Set the width of the color box
-          .attr("height", 15) // Set the height of the color box
-          .style("fill", (d) => regionColors(d));
+        legend.append("rect").attr("x", 0).attr("y", 0).attr("width", 15).attr("height", 15).style("fill", (d) => regionColors(d));
 
-        legend
-          .append("text")
-          .attr("x", 20) // Set a larger x position for the text
-          .attr("y", 12)
-          .text((d) => d)
-          .style("font-size", "12px"); // Adjust font size for better readability
+        legend.append("text").attr("x", 20).attr("y", 12).text((d) => d).style("font-size", "12px");
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, []); // Empty dependency array ensures this effect runs only once on mount
+  }, []);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", height: "50vh" }}>
       <div id="legendContainer" style={{ padding: "20px" }}></div>
-      <div id="svgContainer" style={{ flex: 1 }}></div>
+      <div id="svgContainer" style={{ flexGrow: 1 }}></div>
     </div>
   );
 };
