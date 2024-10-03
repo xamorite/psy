@@ -15,7 +15,7 @@ const NavBar = () => {
             Psychgen_Portal
           </div> */}
           <Image
-              src="/logo.png"
+              src="/logo.svg"
               alt=""
               width={100}
               height={100}

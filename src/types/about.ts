@@ -1,35 +1,45 @@
-export interface About {
+export interface AboutPage {
     id: number;
     title: string;
     introduction: string;
-    mission: Array<{
-        id: number;
-        title: string;
-        content: string;
-        about_page: number;
-    }>;
-    objectives: Array<{
-        id: number;
-        content: string;
-        about_page: number;
-    }>;
-    key_features: Array<{
-        id: number;
-        title: string;
-        content: string;
-        about_page: number;
-    }>;
-    technology: Array<{
-        id: number;
-        title: string;
-        content: string;
-        about_page: number;
-    }>;
-    vision: Array<{
-        id: number;
-        title: string;
-        content: string;
-        about_page: number;
-    }>;
+    mission: Mission[];
+    objectives: Objective[];
+    key_features: KeyFeature[];
+    technology: Technology[];
+    vision: Vision[];
     last_updated: string;
-}
+  }
+  
+  interface Mission {
+    id: number;
+    title: string;
+    content: string;
+    about_page: number;
+  }
+  
+  interface Objective {
+    id: number;
+    content: string;
+    about_page: number;
+  }
+  
+  interface KeyFeature {
+    id: number;
+    title: string;
+    content: string;
+    about_page: number;
+  }
+  
+  interface Technology {
+    id: number;
+    title: string;
+    content: string;
+    about_page: number;
+  }
+  
+  interface Vision {
+    id: number;
+    title: string;
+    content: string;
+    about_page: number;
+  }
