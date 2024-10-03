@@ -21,12 +21,12 @@ const Analysis = () => {
       <div className="p-10 w-full space-y-6 ">
         <h1 className="text-2xl lg:text-3xl font-bold ">Visualize by:</h1>
         <Tabs
-          defaultValue="collaboration"
+          defaultValue="year"
           className="lg:w-[70vw] mx-auto space-y-10"
         >
           <div className="p-1 border-none lg:border-y-[1px] lg:border-x-[1px]">
             <TabsList className="flex">
-              <TabsTrigger value="collaboration">Collaboration</TabsTrigger>
+              <TabsTrigger value="collaboration" className="hiddedn lg:contents">Collaboration</TabsTrigger>
               <TabsTrigger value="year">Year</TabsTrigger>
               <TabsTrigger value="region">Region</TabsTrigger>
               <TabsTrigger value="disorder">Disorder</TabsTrigger>

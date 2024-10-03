@@ -46,7 +46,7 @@ const NavBar = () => {
         </div>
       </div>
 
-      <div className="hidden ml-auto lg:flex items-center justify-between space-x-2 ">
+      {/* <div className="hidden ml-auto lg:flex items-center justify-between space-x-2 ">
         <div className="flex items-center space-x-4">
           <Link
             href="/SignUp"
@@ -71,7 +71,7 @@ const NavBar = () => {
             </div>
           </Link>
         </div>
-      </div>
+      </div> */}
 
       {/* mobile nav */}
       <div className="lg:hidden ml-auto">
