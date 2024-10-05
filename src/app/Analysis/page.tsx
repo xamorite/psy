@@ -1,4 +1,5 @@
-"use client";
+"use client"
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import YearlyStudyCount from "@/components/graph/yearly";
 import RegionalStudyCount from "@/components/graph/region";
@@ -26,7 +27,7 @@ const Analysis = () => {
         >
           <div className="p-1 border-none lg:border-y-[1px] lg:border-x-[1px]">
             <TabsList className="flex">
-              <TabsTrigger value="collaboration" className="hiddedn lg:contents">Collaboration</TabsTrigger>
+              <TabsTrigger value="collaboration" className="hidden lg:contents">Collaboration</TabsTrigger>
               <TabsTrigger value="year">Year</TabsTrigger>
               <TabsTrigger value="region">Region</TabsTrigger>
               <TabsTrigger value="disorder">Disorder</TabsTrigger>
